@@ -319,12 +319,14 @@ REMORA::WritePlotFile ()
 
         MultiFab::Copy(mf_nd[lev],*vec_z_phys_nd[lev],0,2,1,0);
         Real dz = Geom()[lev].CellSizeArray()[2];
+        int N = Geom()[lev].Domain().size()[2];
+
         for (MFIter mfi(mf_nd[lev], TilingIfNotGPU()); mfi.isValid(); ++mfi)
         {
             const Box& bx = mfi.tilebox();
             Array4<Real> mf_arr = mf_nd[lev].array(mfi);
             ParallelFor(bx, [=] AMREX_GPU_DEVICE (int i, int j, int k) {
-                mf_arr(i,j,k,2) -= k * dz;
+                mf_arr(i,j,k,2) = mf_arr(i,j,k,2) + (N-k) * dz;
             });
         } // mfi
 
