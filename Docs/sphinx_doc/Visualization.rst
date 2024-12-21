@@ -8,10 +8,16 @@ Visualization
 =============
 
 By default, REMORA currently generates plotfile in the native AMReX format, but
-they can also be written in HDF5 or NetCDF.
+they can also be written in NetCDF. For NetCDF, you can use your favorite reader or
+analysis tool. The files contain the attributes necessary to, e.g. calculate the
+stretched vertical grid as one would from a ROMS NetCDF file.
 
 There are several visualization tools that can be used for AMReX plotfiles, specifically
-ParaView, VisIt and yt.
+ParaView, VisIt and yt. The plotfile output does not currently explicitly include
+the sea surface height. We instead output the transformation from the logical z-grid
+(similar to the S-grid). We also do not yet include bathymetry or other 2D variables.
+These will be included in a later release. If you need these, we encourage you to use
+the NetCDF output.
 
 .. _section-1:
 
@@ -29,10 +35,12 @@ To open a plotfile
    Open multiple plotfile at once by selecting ``plt..`` Paraview will load the plotfiles as a time series.
    ParaView will ask you about the file type -- choose "AMReX/BoxLib Grid Reader".
 
-#. If you have run the REMORA executable with terrain, then the mapped grid information will
+# Check the available nodal and cell data sets, and click "Apply".
+
+#. The mapped grid information will
    be stored as nodal data.  Choose the "point data" called "nu", then click on "Warp by Vector"
    which can be found via Filters-->Alphabetical.  This will then plot data onto the mapped grid
-   locations.
+   locations. If "Warp by Vector" is not available, make sure the plotfile is highlighted in the pipeline browser. If your depth is very thin compared to the x- and y-extent, you may want to adjust the z-scale (search for scale in the search bar of the Properties tab).
 
 #. Under the "Cell Arrays" field, select a variable (e.g., "x_velocity") and click
    "Apply". Note that the default number of refinement levels loaded and visualized is 1.
@@ -74,7 +82,7 @@ VisIt
 
 AMReX data can also be visualized by VisIt, an open source visualization and
 analysis software. To follow along with this example, first build and run the
-first `heat equation`_ tutorial code.
+first `heat equation`_ tutorial code from the AMReX tutorials.
 
 .. _`heat equation`: https://github.com/AMReX-Codes/amrex-tutorials/tree/main/GuidedTutorials/HeatEquation
 
@@ -180,7 +188,13 @@ AMReX codes. Some of the AMReX developers are also yt project members.  Below
 we describe how to use on both a local workstation, as well as at the NERSC
 HPC facility for high-throughput visualization of large data sets.
 
+Note that yt cannot currently
+access the nodal grid data used by Paraview. Future development will include
+a REMORA-specific interface that will be able to be used to read the expected
+2D data fields from plotfiles.
+
 Note - AMReX datasets require yt version 3.4 or greater.
+
 
 Using on a local workstation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
