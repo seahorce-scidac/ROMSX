@@ -70,9 +70,16 @@ Instructions for how to specify domain boundary conditions, with usage examples 
 Imposing Boundary and Initial Conditions from NetCDF File
 =========================================================
 
-Grid, initial, and time-dependent boundary data can be specified using NetCDF files, as in ROMS. REMORA expects files in the same format as ROMS, in NetCDF classic format (32- or 64-bit).
-Currently, if one of these are specified in a file, they all must be. Boundary condition options with NetCDF boundary data are equivalent to ROMS clamped, Chapman-Flather, and Orlanski + Nudging boundary conditions. Options and examples can be found in the section on :ref:`Domain Boundary Conditions`<sec:domainBCs>`.
+Grid, initial, and time-dependent boundary data can be specified using NetCDF files, as in ROMS. REMORA expects files in the same format as ROMS, in NetCDF classic format (32- or 64-bit). Other versions of NetCDF files can be converted to 64-bit NetCDF classic by running the command:
 
+.. code:: shell
+
+    ncks -5 old_file.nc converted_file.nc
+
+The utility ``ncks`` is part of the `NCO <https://nco.sourceforge.net>`_ suite.
+
+Currently, if one of these are speci  fied in a file, they all must be. Boundary condition options with NetCDF boundary data are equivalent to ROMS clamped, Chapman-Flather, and Orlanski + Nudging boundary conditions. Options and examples can be found in the section on :ref:`Domain Boundary Conditions`<sec:domainBCs>`.
+                                    --
 List of Parameters
 ------------------
 
