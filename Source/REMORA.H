@@ -530,6 +530,33 @@ public:
                   const amrex::Array4<amrex::Real const>& mskr,
                   const int N);
 
+    void lin_eos (const amrex::Box& bx,
+                  const amrex::Array4<amrex::Real const>& state,
+                  const amrex::Array4<amrex::Real      >& rho,
+                  const amrex::Array4<amrex::Real      >& rhoA,
+                  const amrex::Array4<amrex::Real      >& rhoS,
+                  const amrex::Array4<amrex::Real      >& bvf,
+                  const amrex::Array4<amrex::Real const>& Hz,
+                  const amrex::Array4<amrex::Real const>& z_w,
+                  const amrex::Array4<amrex::Real const>& z_r,
+                  const amrex::Array4<amrex::Real const>& h,
+                  const amrex::Array4<amrex::Real const>& mskr,
+                  const int N);
+
+    void nonlin_eos (const amrex::Box& bx,
+                  const amrex::Array4<amrex::Real const>& state,
+                  const amrex::Array4<amrex::Real      >& rho,
+                  const amrex::Array4<amrex::Real      >& rhoA,
+                  const amrex::Array4<amrex::Real      >& rhoS,
+                  const amrex::Array4<amrex::Real      >& bvf,
+                  const amrex::Array4<amrex::Real const>& Hz,
+                  const amrex::Array4<amrex::Real const>& z_w,
+                  const amrex::Array4<amrex::Real const>& z_r,
+                  const amrex::Array4<amrex::Real const>& h,
+                  const amrex::Array4<amrex::Real const>& mskr,
+                  const int N);
+
+
     void prsgrd (const amrex::Box& bx,
                  const amrex::Box& gbx,
                  const amrex::Box& utbx,

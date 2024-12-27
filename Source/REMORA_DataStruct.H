@@ -51,6 +51,10 @@ enum class GLS_StabilityType {
     Canuto_A, Canuto_B, Galperin
 };
 
+enum class EOSType {
+    linear, nonlinear
+};
+
 struct SolverChoice {
   public:
     void init_params()
@@ -110,14 +114,26 @@ struct SolverChoice {
         pp.query("init_l0int_h", init_l0int_h);
         pp.query("init_l0int_T", init_l0int_T);
 
-        //Read in linear eos parameters
+        static std::string eos_type_string = "linear";
+        pp.query("eos_type",eos_type_string);
+        if (eos_type_string == "linear" || eos_type_string == "Linear" ||
+              eos_type_string == "lin"    || eos_type_string == "Lin") {
+            eos_type = EOSType::linear;
+            pp.query("Tcoef",Tcoef);
+            pp.query("Scoef",Scoef);
+        } else if (eos_type_string == "nonlinear" || eos_type_string == "Nonlinear" ||
+                   eos_type_string == "non-linear" || eos_type_string == "Non-linear" ||
+                   eos_type_string == "nonlin"     || eos_type_string == "Nonlin") {
+            eos_type = EOSType::nonlinear;
+        } else {
+            amrex::Abort("Dont know this eos_type");
+        }
         pp.query("R0",R0);
         pp.query("S0",S0);
         pp.query("T0",T0);
-        pp.query("Tcoef",Tcoef);
-        pp.query("Scoef",Scoef);
         pp.query("rho0", rho0);
 
+        //Read in linear eos parameters
         //Grid stretching
         pp.query("theta_s",theta_s);
         pp.query("theta_b",theta_b);
@@ -381,6 +397,9 @@ struct SolverChoice {
 
     // Coriolis forcing type
     Cor_Type coriolis_type;
+
+    // EOS type
+    EOSType eos_type;
 
     // Mixing type and parameters
     VertMixingType vert_mixing_type;
