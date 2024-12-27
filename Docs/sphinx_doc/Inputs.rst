@@ -508,6 +508,9 @@ List of Parameters
 | **remora.ggrav**                  | Gravitational field strength           | Real number       | 9.81           |
 |                                   | [kg m/s^2]                             |                   |                |
 +-----------------------------------+----------------------------------------+-------------------+----------------+
+| **remora.eos_type**               | Which equation of state to use.        | Linear or         | Linear         |
+|                                   | Nonlinear corresponds to UNESCO        | Nonlinear         |                |
++-----------------------------------+----------------------------------------+-------------------+----------------+
 | **remora.R0**                     | Background density [kg/m^3]            | Real number       | 1028           |
 |                                   | used in Linear Equation of             |                   |                |
 |                                   | State. May be used in setup            |                   |                |

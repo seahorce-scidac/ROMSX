@@ -419,9 +419,19 @@ The integral is actually computed as a sum from the bottom upwards and also as a
 
 Equation of State
 -----------------
-The density is obtained from temperature :math:`\left(T\right)` and salinity :math:`\left(S\right)` via a linear equation of state:
+
+Linear Equation of State
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+When using the linear equation of state, density is obtained from temperature :math:`\left(T\right)` and salinity :math:`\left(S\right)` via a linear equation of state:
 
 .. math::
    \rho\left(T,S\right) = R_0 - R_0 T_{\mathrm{coef}} (T - T_0) + R_0 S_{\mathrm{coef}} (S-S_0).
 
 The constants :math:`R_0`, :math:`T_0`, :math:`S_0`, :math:`T_{\mathrm{coef}}`, and :math:`S_{\mathrm{coef}}` are specified in the :ref:`inputs`<list-of-parameters-15>` file.
+
+Nonlinear Equation of State
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The nonlinear equation of state option corresponds to the UNESCO equation of state as derived by Jackett and McDougall (1995), computing density as a fitted polynomial function of temperature, salinity, and pressure (for which depth is used as a proxy under the assumption that pressure does not change along geopotential surfaces).
+
