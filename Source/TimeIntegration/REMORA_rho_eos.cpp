@@ -248,7 +248,7 @@ REMORA::nonlin_eos (const Box& bx,
 //  used (rhoS) in barotropic pressure gradient.
 //-----------------------------------------------------------------------
 //
-    Real cff2 =1.0_rt/solverChoice.rho0;
+    Real cff_rho =1.0_rt/solverChoice.rho0;
 
     ParallelFor(makeSlab(bx,2,0), [=] AMREX_GPU_DEVICE (int i, int j, int )
     {
@@ -262,8 +262,8 @@ REMORA::nonlin_eos (const Box& bx,
             rhoA(i,j,0) += cff1;
         }
         Real cff11 =1.0_rt/(z_w(i,j,N+1)+h(i,j,0,0));
-        rhoA(i,j,0) *= cff2*cff11;
-        rhoS(i,j,0) *= 2.0_rt*cff11*cff11*cff2;
+        rhoA(i,j,0) *= cff_rho*cff11;
+        rhoS(i,j,0) *= 2.0_rt*cff11*cff11*cff_rho;
     });
 
     // Compute Brunt-Vaisala frequency (1/s2)
