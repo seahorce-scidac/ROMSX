@@ -21,33 +21,37 @@ The following options in the inputs file control the generation of plotfiles.
 List of Parameters
 ------------------
 
-+--------------------------------+------------------+-----------------------+------------+
-| Parameter                      | Definition       | Acceptable            | Default    |
-|                                |                  | Values                |            |
-+================================+==================+=======================+============+
-| **remora.plotfile_type**       | AMReX or NETCDF  | "amrex" or            | "amrex"    |
-|                                |                  | "netcdf / "NetCDF"    |            |
-+--------------------------------+------------------+-----------------------+------------+
-| **remora.write_history_file**  | do we write      | false or true         | true       |
-|                                | netcdf files at  |                       |            |
-|                                | each timestep    |                       |            |
-|                                | or one file for  |                       |            |
-|                                | all timesteps?   |                       |            |
-+--------------------------------+------------------+-----------------------+------------+
-| **remora.plot_file**           | prefix for       | String                | “plt”      |
-|                                | plotfiles        |                       |            |
-+--------------------------------+------------------+-----------------------+------------+
-| **remora.plot_int**            | how often (by    | Integer               | -1         |
-|                                | level-0 time     | :math:`> 0`           |            |
-|                                | steps) to write  |                       |            |
-|                                | plot files       |                       |            |
-+--------------------------------+------------------+-----------------------+------------+
-| **remora.plot_vars**           | name of          | list of names         | None       |
-|                                | variables to     | (see table below)     |            |
-|                                | include in       |                       |            |
-|                                | plotfiles. Not   |                       |            |
-|                                | used for netCDF  |                       |            |
-+--------------------------------+------------------+-----------------------+------------+
++--------------------------------+-----------------------------------+-----------------------+------------+
+| Parameter                      | Definition                        | Acceptable            | Default    |
+|                                |                                   | Values                |            |
++================================+===================================+=======================+============+
+| **remora.plotfile_type**       | AMReX or NETCDF plotfiles         | "amrex" or            | "amrex"    |
+|                                |                                   | "netcdf / "NetCDF"    |            |
++--------------------------------+-----------------------------------+-----------------------+------------+
+| **remora.file_min_digits**     | Minimum number of digits          | Integer >= 0          | 5          |
+|                                | in iteration number appended to   |                       |            |
+|                                | plotfile and checkpoint files     |                       |            |
++--------------------------------+-----------------------------------+-----------------------+------------+
+| **remora.write_history_file**  | do we write                       | false or true         | true       |
+|                                | netcdf files at                   |                       |            |
+|                                | each timestep                     |                       |            |
+|                                | or one file for                   |                       |            |
+|                                | all timesteps?                    |                       |            |
++--------------------------------+-----------------------------------+-----------------------+------------+
+| **remora.plot_file**           | prefix for                        | String                | “plt”      |
+|                                | plotfiles                         |                       |            |
++--------------------------------+-----------------------------------+-----------------------+------------+
+| **remora.plot_int**            | how often (by                     | Integer               | -1         |
+|                                | level-0 time                      | :math:`> 0`           |            |
+|                                | steps) to write                   |                       |            |
+|                                | plot files                        |                       |            |
++--------------------------------+-----------------------------------+-----------------------+------------+
+| **remora.plot_vars**           | name of                           | list of names         | None       |
+|                                | variables to                      | (see table below)     |            |
+|                                | include in                        |                       |            |
+|                                | plotfiles. Not                    |                       |            |
+|                                | used for netCDF                   |                       |            |
++--------------------------------+-----------------------------------+-----------------------+------------+
 
 .. _notes-5:
 
