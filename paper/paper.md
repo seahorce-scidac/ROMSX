@@ -11,6 +11,10 @@ authors:
     orcid: 0000-0003-2095-4293
     corresponding: true
     affiliation: 1
+  - name: Robert Hetland
+    orcid: 0000-0001-9531-2119
+    corresponding: false
+    affiliation: 2
   - name: Jean Sexton
     orcid: 0000-0003-2551-1678
     corresponding: false
@@ -19,18 +23,14 @@ authors:
     orcid: 0000-0003-2103-312X
     corresponding: false
     affiliation: 1
-  - name: Robert Hetland
-    orcid: 0000-0001-9531-2119
-    corresponding: false
-    affiliation: 2
-  - name: Kyle Hinson
-    orcid: 0000-0002-2737-2379
-    corresponding: false
-    affiliation: 2
   - name: Iulian Grindeanu
     orcid: 0000-0002-0264-8236
     corresponding: false
     affiliation: 3
+  - name: Kyle Hinson
+    orcid: 0000-0002-2737-2379
+    corresponding: false
+    affiliation: 2
   - name: Vijay Mahadevan
     orcid: 0000-0002-3337-2607
     corresponding: false
