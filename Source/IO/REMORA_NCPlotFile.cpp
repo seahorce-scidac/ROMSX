@@ -317,6 +317,14 @@ void REMORA::WriteNCPlotFile_which(int lev, int which_subdomain, bool write_head
         ncf.var("salt").put_attr("coordinates","x_rho y_rho s_rho ocean_time");
         ncf.var("salt").put_attr("field","salinity, scalar, series");
 
+        ncf.def_var_fill("tracer", ncutils::NCDType::Real, { nt_name, nz_r_name, ny_r_name, nx_r_name }, &fill_value);
+        ncf.var("tracer").put_attr("long_name","passive tracer");
+        ncf.var("tracer").put_attr("time","ocean_time");
+        ncf.var("tracer").put_attr("grid","grid");
+        ncf.var("tracer").put_attr("location","face");
+        ncf.var("tracer").put_attr("coordinates","x_rho y_rho s_rho ocean_time");
+        ncf.var("tracer").put_attr("field","tracer, scalar, series");
+
         ncf.def_var_fill("u", ncutils::NCDType::Real, { nt_name, nz_r_name, ny_u_name, nx_u_name }, &fill_value);
         ncf.var("u").put_attr("long_name","u-momentum component");
         ncf.var("u").put_attr("units","meter second-1");
@@ -373,8 +381,8 @@ void REMORA::WriteNCPlotFile_which(int lev, int which_subdomain, bool write_head
 
         Real time = 0.;
 
-        // Right now this is hard-wired to {temp, salt, u, v}
-        int n_data_items = 4;
+        // Right now this is hard-wired to {temp, salt, tracer, u, v}
+        int n_data_items = 5;
 //        ncf.put_attr("number_variables", std::vector<int> { n_data_items });
         ncf.put_attr("space_dimension", std::vector<int> { AMREX_SPACEDIM });
 //        ncf.put_attr("current_time", std::vector<double> { time });
@@ -648,6 +656,17 @@ void REMORA::WriteNCPlotFile_which(int lev, int which_subdomain, bool write_head
 
                 auto nc_plot_var = ncf.var("salt");
                 nc_plot_var.put(tmp_salt.dataPtr(), { local_start_nt, local_start_z, local_start_y, local_start_x }, { local_nt,
+                        local_nz, local_ny, local_nx });
+            }
+
+            {
+                FArrayBox tmp_tracer;
+                tmp_tracer.resize(tmp_bx, 1, amrex::The_Pinned_Arena());
+                tmp_tracer.template copy<RunOn::Device>((*cons_new[lev])[mfi.index()], Scalar_comp, 0, 1);
+                Gpu::streamSynchronize();
+
+                auto nc_plot_var = ncf.var("tracer");
+                nc_plot_var.put(tmp_tracer.dataPtr(), { local_start_nt, local_start_z, local_start_y, local_start_x }, { local_nt,
                         local_nz, local_ny, local_nx });
             }
         } // subdomain
