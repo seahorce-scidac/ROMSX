@@ -1,7 +1,7 @@
 REMORA
 ------
 
-REMORA is a new GPU-enabled code designed to replicate the functionality of the ROMS code but with the ability to exploit GPU architectures.
+REMORA (Regional Model of the Ocean Refined Adaptively) is a new GPU-enabled code designed to replicate the functionality of the ROMS code but with the ability to exploit GPU architectures.
 
 `REMORA` is built upon the `AMReX <https://amrex-codes.github.io/amrex/>`_ software framework
 for massively parallel block-structured applications. The AMReX software framework provides performance portability across multiple architectures.
