@@ -106,12 +106,15 @@ int main(int argc, char* argv[])
     const Real strt_total = Real(amrex::second());
 
     {
+        BL_PROFILE_VAR("REMORA::InitData()", pinit);
         // constructor - reads in parameters from inputs file
         //             - sizes multilevel arrays and data structures
         REMORA remora;
 
         // initialize AMR data
         remora.InitData();
+
+        BL_PROFILE_VAR_STOP(pinit);
 
         // advance solution to final time
         remora.Evolve();
