@@ -794,6 +794,28 @@ REMORA::ReadParameters ()
             plotfile_type = PlotfileType::netcdf;
 #ifdef REMORA_USE_NETCDF
             pp.query("write_history_file",write_history_file);
+            pp.query("chunk_history_file",chunk_history_file);
+            pp.query("steps_per_history_file",steps_per_history_file);
+            // Estimate size of domain for one timestep of netcdf
+            auto dom = geom[0].Domain();
+            int nx = dom.length(0) + 2;
+            int ny = dom.length(1) + 2;
+            int nz = dom.length(2);
+            if (write_history_file and chunk_history_file and (steps_per_history_file <= 0)) {
+                // Estimate number of steps that will fit into a 2GB file.
+                steps_per_history_file = int((1.6e10 - NCH2D * nx * ny * 64.0_rt)
+                        / (nx * ny * 64.0_rt * (NC3D*nz + NC2D)));
+                // If we calculate that a single step will exceed 2GB and the user has
+                // requested automatic history file sizing, warn about a possible impending
+                // error, and set steps_per_history_file = 1 to attempt output anyway.
+                if (steps_per_history_file == 0) {
+                    amrex::Warning("NetCDF output for a single timestep appears to exceed 2GB. NetCDF output may not work. See Documentation for information about tested MPICH versions.");
+                    steps_per_history_file = 1;
+                }
+            }
+            if (write_history_file and chunk_history_file) {
+                Print() << "NetCDF history files will have " << steps_per_history_file << " steps per file." << std::endl;
+            }
 #endif
         } else {
             amrex::Print() << "User selected plotfile_type = " << plotfile_type_str << std::endl;
