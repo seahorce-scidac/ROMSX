@@ -23,6 +23,7 @@ void REMORA::WriteNCPlotFile(int which_step) {
     // For right now we assume single level -- we will generalize this later to multilevel
     int lev = 0;
     int which_subdomain = 0;
+    int which_step_in_chunk = -1;
 
     // Create filename
     std::string plt_string;
@@ -31,6 +32,12 @@ void REMORA::WriteNCPlotFile(int which_step) {
         plotfilename = plot_file_name + "_his";
     } else {
         plotfilename = Concatenate(plot_file_name, which_step, file_min_digits);
+    }
+    // If chunking, concatenate with which file we're in
+    if (REMORA::write_history_file and REMORA::chunk_history_file) {
+        int which_chunk = history_count / REMORA::steps_per_history_file;
+        plotfilename = Concatenate(plotfilename, which_chunk, file_min_digits);
+        which_step_in_chunk = history_count - which_chunk * REMORA::steps_per_history_file;
     }
 
     // Set the full IO path for NetCDF output
@@ -48,7 +55,7 @@ void REMORA::WriteNCPlotFile(int which_step) {
     //       have the IOProcessor move the existing
     //       file/directory to filename.old
     //
-    if ((!REMORA::write_history_file) || (which_step == 0)) {
+    if ((!REMORA::write_history_file) || (which_step == 0) || (which_step_in_chunk == 0)) {
         if (amrex::ParallelDescriptor::IOProcessor()) {
             if (amrex::FileExists(FullPath)) {
                 std::string newoldname(FullPath + ".old." + amrex::UniqueString());
@@ -111,6 +118,15 @@ void REMORA::WriteNCPlotFile_which(int lev, int which_subdomain, bool write_head
     if (is_history && max_step < 0)
         amrex::Abort("Need to know max_step if writing history file");
     long long int nt = is_history ? static_cast<long long int>(max_step / std::min(plot_int, max_step)) + 1 : 1;
+    if (chunk_history_file) {
+        // First index of the last history file
+        int last_file_index = REMORA::steps_per_history_file * int(nt / REMORA::steps_per_history_file);
+        if (history_count >= last_file_index) {
+            nt = nt - last_file_index;
+        } else {
+            nt = REMORA::steps_per_history_file;
+        }
+    }
 
     n_cells.push_back(nx);
     n_cells.push_back(ny);
@@ -317,6 +333,14 @@ void REMORA::WriteNCPlotFile_which(int lev, int which_subdomain, bool write_head
         ncf.var("salt").put_attr("coordinates","x_rho y_rho s_rho ocean_time");
         ncf.var("salt").put_attr("field","salinity, scalar, series");
 
+        ncf.def_var_fill("tracer", ncutils::NCDType::Real, { nt_name, nz_r_name, ny_r_name, nx_r_name }, &fill_value);
+        ncf.var("tracer").put_attr("long_name","passive tracer");
+        ncf.var("tracer").put_attr("time","ocean_time");
+        ncf.var("tracer").put_attr("grid","grid");
+        ncf.var("tracer").put_attr("location","face");
+        ncf.var("tracer").put_attr("coordinates","x_rho y_rho s_rho ocean_time");
+        ncf.var("tracer").put_attr("field","tracer, scalar, series");
+
         ncf.def_var_fill("u", ncutils::NCDType::Real, { nt_name, nz_r_name, ny_u_name, nx_u_name }, &fill_value);
         ncf.var("u").put_attr("long_name","u-momentum component");
         ncf.var("u").put_attr("units","meter second-1");
@@ -373,8 +397,8 @@ void REMORA::WriteNCPlotFile_which(int lev, int which_subdomain, bool write_head
 
         Real time = 0.;
 
-        // Right now this is hard-wired to {temp, salt, u, v}
-        int n_data_items = 4;
+        // Right now this is hard-wired to {temp, salt, tracer, u, v}
+        int n_data_items = 5;
 //        ncf.put_attr("number_variables", std::vector<int> { n_data_items });
         ncf.put_attr("space_dimension", std::vector<int> { AMREX_SPACEDIM });
 //        ncf.put_attr("current_time", std::vector<double> { time });
@@ -463,7 +487,8 @@ void REMORA::WriteNCPlotFile_which(int lev, int which_subdomain, bool write_head
     //
     // We compute the offsets based on location of the box within the domain
     //
-    long long local_start_nt = (is_history ? static_cast<long long>(history_count) : static_cast<long long>(0));
+    long long adjusted_history_count = chunk_history_file ? history_count % steps_per_history_file : history_count;
+    long long local_start_nt = (is_history ? static_cast<long long>(adjusted_history_count) : static_cast<long long>(0));
     long long local_nt = 1; // We write data for only one time
 
     {
@@ -648,6 +673,17 @@ void REMORA::WriteNCPlotFile_which(int lev, int which_subdomain, bool write_head
 
                 auto nc_plot_var = ncf.var("salt");
                 nc_plot_var.put(tmp_salt.dataPtr(), { local_start_nt, local_start_z, local_start_y, local_start_x }, { local_nt,
+                        local_nz, local_ny, local_nx });
+            }
+
+            {
+                FArrayBox tmp_tracer;
+                tmp_tracer.resize(tmp_bx, 1, amrex::The_Pinned_Arena());
+                tmp_tracer.template copy<RunOn::Device>((*cons_new[lev])[mfi.index()], Scalar_comp, 0, 1);
+                Gpu::streamSynchronize();
+
+                auto nc_plot_var = ncf.var("tracer");
+                nc_plot_var.put(tmp_tracer.dataPtr(), { local_start_nt, local_start_z, local_start_y, local_start_x }, { local_nt,
                         local_nz, local_ny, local_nx });
             }
         } // subdomain

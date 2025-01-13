@@ -978,6 +978,14 @@ private:
     std::string check_file {"chk"};
     int check_int = -1;
 
+    // Whether to chunk netcdf history file
+    bool chunk_history_file = false;
+
+    // Number of time steps per netcdf history file.
+    // -1 is the default and means code will automatically compute
+    // number of steps per file based on grid size to keep files < 2 GB
+    int steps_per_history_file = -1;
+
     amrex::Vector<std::string> plot_var_names;
     const amrex::Vector<std::string>     cons_names {"temp", "salt", "scalar"};
 
@@ -1017,7 +1025,7 @@ private:
     static int sum_interval;
     static amrex::Real sum_per;
 
-    // Minimum number of digits in plotfile name
+    // Minimum number of digits in plotfile name or chunked history file
     static int file_min_digits;
 
     // Native or NetCDF

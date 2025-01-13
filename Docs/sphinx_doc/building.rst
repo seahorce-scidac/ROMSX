@@ -42,6 +42,11 @@ At run-time, you may need to add PnetCDF to the link path, e.g.:
 
 See sections below for compiler-specific instructions for how to enable NetCDF support.
 
+   .. note::
+      **When built with some MPI implementations, PnetCDF will crash when writing files larger than 2GB. Building
+      with MPICH v4.2.2 will likely solve this issue.**
+
+
 GNU Make
 ~~~~~~~~
 
