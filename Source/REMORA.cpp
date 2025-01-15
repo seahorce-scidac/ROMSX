@@ -637,6 +637,7 @@ REMORA::init_only (int lev, Real time)
     }
 #endif
 
+    set_pm_pn(lev);
     set_bathymetry(lev);
     set_zeta(lev);
     stretch_transform(lev);
@@ -662,7 +663,6 @@ REMORA::init_only (int lev, Real time)
             FillCoarsePatch(lev, time, xvel_new[lev], xvel_new[lev-1]);
             FillCoarsePatch(lev, time, yvel_new[lev], yvel_new[lev-1]);
             FillCoarsePatch(lev, time, zvel_new[lev], zvel_new[lev-1]);
-            set_pm_pn(lev);
         }
     } else if (solverChoice.init_ana_T || solverChoice.init_l1ad_T) {
         if (solverChoice.ic_bc_type == IC_BC_Type::Custom)
