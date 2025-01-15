@@ -395,7 +395,7 @@ REMORA::FillCoarsePatch (int lev, Real time, MultiFab* mf_to_fill, MultiFab* mf_
 //  amrex::InterpFromCoarseLevel(mf, time, *cmf[0], 0, icomp, ncomp, geom[lev-1], geom[lev],
 //                               cphysbc, 0, fphysbc, 0, refRatio(lev-1),
 //                               mapper, domain_bcs_type, bccomp);
-    amrex::InterpFromCoarseLevel(*mf_to_fill, time, mf_crse[lev-1], 0, icomp, ncomp, geom[lev-1], geom[lev],
+    amrex::InterpFromCoarseLevel(*mf_to_fill, time, *mf_crse, 0, icomp, ncomp, geom[lev-1], geom[lev],
                                  null_bc, 0, null_bc, 0, refRatio(lev-1),
                                  mapper, domain_bcs_type, bccomp);
 }
