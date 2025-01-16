@@ -637,7 +637,9 @@ REMORA::init_only (int lev, Real time)
     }
 #endif
 
-    set_pm_pn(lev);
+    if (solverChoice.ic_bc_type == IC_BC_Type::Custom) {
+        set_pm_pn(lev);
+    }
     set_bathymetry(lev);
     set_zeta(lev);
     stretch_transform(lev);
