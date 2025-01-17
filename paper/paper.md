@@ -54,7 +54,7 @@ bibliography: paper.bib
 The Regional Model of the Ocean Refined Adaptively (REMORA) is a new implementation 
 of an existing community standard ocean model, 
 the Regional Ocean Modeling System 
-(ROMS, [@shchepetkin.mcwilliams:05], [@haidvogel.ea:08]) that simulates esutuarine and oceanic 
+(ROMS, [@shchepetkin.mcwilliams:05], [@haidvogel.ea:08]) that simulates estuarine and oceanic 
 dynamics using the latest high-performance computing architectures.
 REMORA employs hierarchical parallelism using an MPI+X model, where X may be OpenMP on
 multicore CPU-only systems, or CUDA, HIP, or SYCL on GPU-accelerated systems.
