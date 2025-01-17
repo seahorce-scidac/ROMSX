@@ -48,6 +48,9 @@ void REMORA::advance_3d_ml (int lev, Real dt_lev)
     FillPatch(lev, t_old[lev], *zvel_new[lev], zvel_new, BCVars::zvel_bc, BdyVars::null);
 
     // Apply land/sea mask to tracers
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for ( MFIter mfi(*cons_new[lev], TilingIfNotGPU()); mfi.isValid(); ++mfi )
     {
         Array4<Real> const& cons = cons_new[lev]->array(mfi);

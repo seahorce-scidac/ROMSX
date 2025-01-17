@@ -78,6 +78,9 @@ REMORA::set_zeta_average (int lev)
 {
     std::unique_ptr<MultiFab>& mf_zeta = vec_zeta[lev];
     std::unique_ptr<MultiFab>& mf_Zt_avg1  = vec_Zt_avg1[lev];
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for ( MFIter mfi(*cons_new[lev], TilingIfNotGPU()); mfi.isValid(); ++mfi )
     {
         int nstp = 0;
@@ -109,6 +112,9 @@ REMORA::set_2darrays (int lev)
     std::unique_ptr<MultiFab>& mf_Hz  = vec_Hz[lev];
     int nstp = 0;
 
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for ( MFIter mfi(*cons_new[lev], TilingIfNotGPU()); mfi.isValid(); ++mfi )
     {
         Array4<Real> const& ubar = (mf_ubar)->array(mfi);
@@ -166,6 +172,9 @@ REMORA::init_gls_vmix (int lev, SolverChoice solver_choice)
 
     auto N = Geom(lev).Domain().size()[2]-1; // Number of vertical "levs" aka, NZ
 
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for (MFIter mfi(*vec_Akk[lev], TilingIfNotGPU()); mfi.isValid(); ++mfi) {
         Array4<Real> const& Akk = vec_Akk[lev]->array(mfi);
         Array4<Real> const& Akp = vec_Akp[lev]->array(mfi);
