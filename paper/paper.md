@@ -79,18 +79,18 @@ Like ROMS, REMORA:
  - uses a nonlinear equation of state based on [@jackett.macdougall:97]
  - uses a third-order (U3) upwind momentum advection scheme
  - uses U3 or center-difference, fourth-order (C4) tracer advection
- - uses analytical vertical diffusivity or viscosity, or uses the Generic Length Scale (GLS) turbulence closure model ([@umlauf:03], [@warner.ea:05]).
- - specified land masking, Coriolis force, and ealistic wind stress
+ - uses analytical vertical diffusivity or viscosity, or uses the Generic Length Scale (GLS) turbulence closure model ([@umlauf:03], [@warner:05]).
+ - specified land masking, Coriolis force, and realistic wind stress
  - uses quadratic or log-layer bottom drag
  - uses periodic, radiation (e.g., @orlanski:76), or clamped time-varying baroclinic lateral boundary conditions
- - uses radiation, chapman/flather (@flather:76, @chapman:85), or clamped barotropic lateral boundary conditions
+ - uses radiation, Chapman/Flather (@flather:76, @chapman:85), or clamped barotropic lateral boundary conditions
  - uses optional boundary nudging based on @marchesiello:01
- - uses parallel I/O with netcdf (using the pnetcdf library), or plotfiles (based on yt)
+ - uses parallel I/O with netCDF (using the PnetCDF library), or AMReX plotfiles
 
 ### Next development steps
  - Surface heat flux parameterizations
  - Rivers
- - Evaporation-Precipitation fluxes
+ - Evaporation-precipitation fluxes
  - Nudging to climatology
  - Adaptive mesh refinement
 
