@@ -68,6 +68,7 @@ and as such requires boundary conditions derived analytically, or from larger-sc
 # REMORA Features
 
 Like ROMS, REMORA:
+
  - solves the incompressible time-dependent Navier-Stokes equation with the Boussinesq and hydrostatic approximations (see [@shchepetkin.mcwilliams:05], [@haidvogel.ea:08])
  - uses a curvilinear Arakawa C-grid
  - uses a stretched, terrain-following vertical s-coordinate
