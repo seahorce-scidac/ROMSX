@@ -100,9 +100,9 @@ Like ROMS, REMORA:
 Most widely used ocean modeling codes today do not have the
 ability to use GPU acceleration, which limits their ability to
 efficiently utilize current and next-generation high performance computing
-architectures.  REMORA provides an ocean modeling capability, based on a proven FORTRAN code
-that runs efficiently on CPUs, that is able to run on all of the latest high-performance
-computing architectures, from laptops to supercomputers, CPU-only or GPU-accelerated.  
+architectures.  REMORA provides an ocean modeling capability (based on a proven FORTRAN code
+that runs efficiently on CPUs) that is able to run on all of the latest high-performance
+computing architectures, from laptops to supercomputers, CPU-only or GPU-accelerated.
 In addition, REMORA is based on AMReX,
 a modern, well-supported adaptive mesh refinement (AMR) library,
 which provides a performance portable interface that shields REMORA
