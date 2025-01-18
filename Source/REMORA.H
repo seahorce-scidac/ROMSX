@@ -263,6 +263,10 @@ public:
 
     /** Linear drag coefficient [m/s], defined at rho points */
     amrex::Vector<std::unique_ptr<amrex::MultiFab>> vec_rdrag;
+    /** Quadratic drag coefficient [unitless], defined at rho points */
+    amrex::Vector<std::unique_ptr<amrex::MultiFab>> vec_rdrag2;
+    /** Bottom roughness length [m], defined at rho points */
+    amrex::Vector<std::unique_ptr<amrex::MultiFab>> vec_ZoBot;
 
     /** Bottom stress in the u direction */
     amrex::Vector<std::unique_ptr<amrex::MultiFab>> vec_bustr;

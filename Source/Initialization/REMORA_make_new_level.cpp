@@ -324,6 +324,8 @@ void REMORA::resize_stuff(int lev)
     vec_sustr.resize(lev+1);
     vec_svstr.resize(lev+1);
     vec_rdrag.resize(lev+1);
+    vec_rdrag2.resize(lev+1);
+    vec_ZoBot.resize(lev+1);
     vec_bustr.resize(lev+1);
     vec_bvstr.resize(lev+1);
 
@@ -451,8 +453,17 @@ void REMORA::init_stuff (int lev, const BoxArray& ba, const DistributionMapping&
     vec_sustr[lev].reset(new MultiFab(convert(ba2d,IntVect(1,0,0)),dm,1,IntVect(NGROW,NGROW,0))); //2d, surface stress
     vec_svstr[lev].reset(new MultiFab(convert(ba2d,IntVect(0,1,0)),dm,1,IntVect(NGROW,NGROW,0))); //2d
 
-    //2d, linear drag coefficient [m/s], defined at rho, somehow related to rdrg
-    vec_rdrag[lev].reset(new MultiFab(ba2d,dm,1,IntVect(NGROW,NGROW,0)));
+    if (solverChoice.bottom_stress_type == BottomStressType::linear) {
+        //2d, linear drag coefficient [m/s], defined at rho, somehow related to rdrg
+        vec_rdrag[lev].reset(new MultiFab(ba2d,dm,1,IntVect(NGROW,NGROW,0)));
+    } else if (solverChoice.bottom_stress_type == BottomStressType::quadratic) {
+        vec_rdrag2[lev].reset(new MultiFab(ba2d,dm,1,IntVect(NGROW,NGROW,0)));
+    }
+
+    if (solverChoice.bottom_stress_type == BottomStressType::logarithmic ||
+        solverChoice.vert_mixing_type == VertMixingType::GLS) {
+        vec_ZoBot[lev].reset(new MultiFab(ba2d,dm,1,IntVect(NGROW,NGROW,0)));
+    }
 
     vec_bustr[lev].reset(new MultiFab(convert(ba2d,IntVect(1,0,0)),dm,1,IntVect(NGROW,NGROW,0))); //2d, bottom stress
     vec_bvstr[lev].reset(new MultiFab(convert(ba2d,IntVect(0,1,0)),dm,1,IntVect(NGROW,NGROW,0)));
@@ -524,7 +535,17 @@ void REMORA::init_stuff (int lev, const BoxArray& ba, const DistributionMapping&
     // when init_type = real. However, this does not appear to be necessary so removing
 
     // Set initial linear drag coefficient
-    vec_rdrag[lev]->setVal(solverChoice.rdrag);
+    if (solverChoice.bottom_stress_type == BottomStressType::linear) {
+        vec_rdrag[lev]->setVal(solverChoice.rdrag);
+    } else if (solverChoice.bottom_stress_type == BottomStressType::quadratic) {
+        vec_rdrag2[lev]->setVal(solverChoice.rdrag2);
+    }
+
+    if (solverChoice.bottom_stress_type == BottomStressType::logarithmic ||
+        solverChoice.vert_mixing_type == VertMixingType::GLS) {
+        vec_ZoBot[lev]->setVal(solverChoice.Zob);
+    }
+
 
     // ********************************************************************************************
     // Create the REMORAFillPatcher object

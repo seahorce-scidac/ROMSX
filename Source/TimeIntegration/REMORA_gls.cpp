@@ -343,7 +343,6 @@ REMORA::gls_corrector (int lev, MultiFab* mf_gls, MultiFab* mf_tke,
     }
 
     Real Zos_min = std::max(solverChoice.Zos, 0.0001_rt);
-    Real Zob_min = std::max(solverChoice.Zob, 0.0001_rt);
     Real Zos_eff = Zos_min;
     Real Gadv = 1.0_rt/3.0_rt;
     Real eps = 1.0e-10_rt;
@@ -483,6 +482,8 @@ REMORA::gls_corrector (int lev, MultiFab* mf_gls, MultiFab* mf_tke,
         Array4<Real> const& bvstr = vec_bvstr[lev]->array(mfi);
         Array4<Real> const& msku = vec_msku[lev]->array(mfi);
         Array4<Real> const& mskv = vec_mskv[lev]->array(mfi);
+
+        Array4<Real> const& ZoBot = vec_ZoBot[lev]->array(mfi);
 
         FArrayBox fab_tmp_buoy(bx_growloxy,1, amrex::The_Async_Arena()); fab_tmp_buoy.template setVal<RunOn::Device>(0.);
         FArrayBox fab_tmp_shear(bx_growloxy,1, amrex::The_Async_Arena()); fab_tmp_shear.template setVal<RunOn::Device>(0.);
@@ -720,6 +721,7 @@ REMORA::gls_corrector (int lev, MultiFab* mf_gls, MultiFab* mf_tke,
         // Compute production and dissipation terms.
         ParallelFor(bxD, [=] AMREX_GPU_DEVICE (int i, int j, int )
         {
+            Real Zob_min = std::max(ZoBot(i,j,0), 0.0001_rt);
             //----------------------------------------------------------------------
             // Time-step dissipation and vertical diffusion terms implicitly.
             //----------------------------------------------------------------------
@@ -885,6 +887,7 @@ REMORA::gls_corrector (int lev, MultiFab* mf_gls, MultiFab* mf_tke,
         });
         ParallelFor(bxD, [=] AMREX_GPU_DEVICE (int i, int j, int )
         {
+            Real Zob_min = std::max(ZoBot(i,j,0), 0.0001_rt);
             Akv(i,j,N+1)=Akv_bak+L_sft*Zos_eff*gls_cmu0*
                           std::sqrt(tke(i,j,N+1,nnew));
             Akv(i,j,0)=Akv_bak+vonKar*Zob_min*gls_cmu0*

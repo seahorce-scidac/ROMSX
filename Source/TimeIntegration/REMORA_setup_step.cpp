@@ -47,6 +47,7 @@ REMORA::setup_step (int lev, Real time, Real dt_lev)
     MultiFab mf_AK(ba,dm,1,IntVect(NGROW,NGROW,0)); //2d missing j coordinate
     MultiFab mf_DC(ba,dm,1,IntVect(NGROW,NGROW,NGROW-1)); //2d missing j coordinate
     MultiFab mf_Hzk(ba,dm,1,IntVect(NGROW,NGROW,NGROW-1)); //2d missing j coordinate
+    MultiFab mf_logdrg_tmp(ba,dm,1,IntVect(NGROW,NGROW,0));
 
     MultiFab* mf_z_r = vec_z_r[lev].get();
     MultiFab* mf_z_w = vec_z_w[lev].get();
@@ -71,6 +72,8 @@ REMORA::setup_step (int lev, Real time, Real dt_lev)
     std::unique_ptr<MultiFab>& mf_sustr = vec_sustr[lev];
     std::unique_ptr<MultiFab>& mf_svstr = vec_svstr[lev];
     std::unique_ptr<MultiFab>& mf_rdrag = vec_rdrag[lev];
+    std::unique_ptr<MultiFab>& mf_rdrag2 = vec_rdrag2[lev];
+    std::unique_ptr<MultiFab>& mf_ZoBot = vec_ZoBot[lev];
     std::unique_ptr<MultiFab>& mf_bustr = vec_bustr[lev];
     std::unique_ptr<MultiFab>& mf_bvstr = vec_bvstr[lev];
 
@@ -114,12 +117,17 @@ REMORA::setup_step (int lev, Real time, Real dt_lev)
 
     for ( MFIter mfi(S_new, TilingIfNotGPU()); mfi.isValid(); ++mfi )
     {
-        Array4<Real const> const& rdrag = mf_rdrag->const_array(mfi);
         Array4<Real      > const& bustr = mf_bustr->array(mfi);
         Array4<Real      > const& bvstr = mf_bvstr->array(mfi);
         Array4<Real const> const& uold  = U_old.const_array(mfi);
         Array4<Real const> const& vold  = V_old.const_array(mfi);
+        Array4<Real      > const& logdrg_tmp = mf_logdrg_tmp.array(mfi);
+        Array4<Real const> const& z_r   = mf_z_r->const_array(mfi);
+        Array4<Real const> const& z_w   = mf_z_w->const_array(mfi);
 
+        Box gbx2 = mfi.growntilebox(IntVect(NGROW,NGROW,0));
+        Box gbx2D = gbx2;
+        gbx2D.makeSlab(2,0);
         Box ubx1 = mfi.grownnodaltilebox(0,IntVect(NGROW-1,NGROW-1,0));
         Box ubx1D = ubx1;
         ubx1D.makeSlab(2,0);
@@ -127,14 +135,51 @@ REMORA::setup_step (int lev, Real time, Real dt_lev)
         Box vbx1D = vbx1;
         vbx1D.makeSlab(2,0);
         // Set bottom stress as defined in set_vbx.F
-        ParallelFor(ubx1D, [=] AMREX_GPU_DEVICE (int i, int j, int )
-        {
-            bustr(i,j,0) = 0.5_rt * (rdrag(i-1,j,0)+rdrag(i,j,0))*(uold(i,j,0));
-        });
-        ParallelFor(vbx1D, [=] AMREX_GPU_DEVICE (int i, int j, int )
-        {
-            bvstr(i,j,0) = 0.5_rt * (rdrag(i,j-1,0)+rdrag(i,j,0))*(vold(i,j,0));
-        });
+        if (solverChoice.bottom_stress_type == BottomStressType::linear) {
+            Array4<Real const> const& rdrag = mf_rdrag->const_array(mfi);
+            ParallelFor(ubx1D, [=] AMREX_GPU_DEVICE (int i, int j, int )
+            {
+                bustr(i,j,0) = 0.5_rt * (rdrag(i-1,j,0)+rdrag(i,j,0))*(uold(i,j,0));
+            });
+            ParallelFor(vbx1D, [=] AMREX_GPU_DEVICE (int i, int j, int )
+            {
+                bvstr(i,j,0) = 0.5_rt * (rdrag(i,j-1,0)+rdrag(i,j,0))*(vold(i,j,0));
+            });
+        } else if (solverChoice.bottom_stress_type == BottomStressType::quadratic) {
+            Array4<Real const> const& rdrag2 = mf_rdrag2->const_array(mfi);
+            ParallelFor(ubx1D, [=] AMREX_GPU_DEVICE (int i, int j, int )
+            {
+                Real avg_v = 0.25_rt * (vold(i,j,0) + vold(i,j+1,0) + vold(i-1,j,0) + vold(i-1,j+1,0));
+                Real vel_mag = std::sqrt(uold(i,j,0)*uold(i,j,0) + avg_v * avg_v);
+                bustr(i,j,0) = 0.5_rt * (rdrag2(i-1,j,0) + rdrag2(i,j,0)) * uold(i,j,0) * vel_mag;
+            });
+            ParallelFor(vbx1D, [=] AMREX_GPU_DEVICE (int i, int j, int )
+            {
+                Real avg_u = 0.25_rt * (uold(i,j,0) + uold(i+1,j,0) + uold(i,j-1,0) + uold(i+1,j-1,0));
+                Real vel_mag = std::sqrt(avg_u * avg_u + vold(i,j,0) * vold(i,j,0));
+                bvstr(i,j,0) = 0.5_rt * (rdrag2(i,j-1,0) + rdrag2(i,j,0)) * vold(i,j,0) * vel_mag;
+            });
+        } else if (solverChoice.bottom_stress_type == BottomStressType::logarithmic) {
+            Array4<Real const> const& ZoBot = mf_ZoBot->const_array(mfi);
+            ParallelFor(gbx2D, [=] AMREX_GPU_DEVICE (int i, int j, int )
+            {
+                Real logz = 1.0_rt / (std::log((z_r(i,j,0) - z_w(i,j,0)) / ZoBot(i,j,0)));
+                Real cff = solverChoice.vonKar * solverChoice.vonKar * logz * logz;
+                logdrg_tmp(i,j,0) = std::min(solverChoice.Cdb_max,std::max(solverChoice.Cdb_min,cff));
+            });
+            ParallelFor(ubx1D, [=] AMREX_GPU_DEVICE (int i, int j, int )
+            {
+                Real avg_v = 0.25_rt * (vold(i,j,0) + vold(i,j+1,0) + vold(i-1,j,0) + vold(i-1,j+1,0));
+                Real vel_mag = std::sqrt(uold(i,j,0)*uold(i,j,0) + avg_v * avg_v);
+                bustr(i,j,0) = 0.5_rt * (logdrg_tmp(i-1,j,0)+logdrg_tmp(i,j,0)) * uold(i,j,0) * vel_mag;
+            });
+            ParallelFor(vbx1D, [=] AMREX_GPU_DEVICE (int i, int j, int )
+            {
+                Real avg_u = 0.25_rt * (uold(i,j,0) + uold(i+1,j,0) + uold(i,j-1,0) + uold(i+1,j-1,0));
+                Real vel_mag = std::sqrt(avg_u * avg_u + vold(i,j,0) * vold(i,j,0));
+                bvstr(i,j,0) = 0.5_rt * (logdrg_tmp(i,j-1,0) + logdrg_tmp(i,j,0)) * vold(i,j,0) * vel_mag;
+            });
+        }
     }
     FillPatch(lev, time, *vec_bustr[lev].get(), GetVecOfPtrs(vec_bustr), BCVars::u2d_simple_bc, BdyVars::null,0,true,false);
     FillPatch(lev, time, *vec_bvstr[lev].get(), GetVecOfPtrs(vec_bvstr), BCVars::v2d_simple_bc, BdyVars::null,0,true,false);
