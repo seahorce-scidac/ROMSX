@@ -81,6 +81,9 @@ void REMORAPC::initializeParticlesUniformDistributionInBox (const std::unique_pt
                              ParticleDistributionMap(lev),
                              1, 0 );
     num_particles.setVal(0);
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for(MFIter mfi = MakeMFIter(lev); mfi.isValid(); ++mfi) {
         const Box& tile_box  = mfi.tilebox();
         auto num_particles_arr = num_particles[mfi].array();
@@ -117,6 +120,9 @@ void REMORAPC::initializeParticlesUniformDistributionInBox (const std::unique_pt
                        1, 0 );
     offsets.setVal(0);
 
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for(MFIter mfi = MakeMFIter(lev); mfi.isValid(); ++mfi) {
         const Box& tile_box  = mfi.tilebox();
 

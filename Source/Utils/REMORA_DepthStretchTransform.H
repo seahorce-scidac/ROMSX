@@ -21,6 +21,9 @@ REMORA::stretch_transform (int lev)
     std::unique_ptr<MultiFab>& mf_z_phys_nd  = vec_z_phys_nd[lev];
     auto N_loop = Geom(lev).Domain().size()[2]; // Number of vertical "levs" aka, NZ
 
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for ( MFIter mfi(*cons_new[lev], TilingIfNotGPU()); mfi.isValid(); ++mfi )
     {
       Array4<Real> const& z_w = (mf_z_w)->array(mfi);
@@ -201,6 +204,9 @@ REMORA::stretch_transform (int lev)
     vec_Hz[lev]->FillBoundary(geom[lev].periodicity());
 
     // Define nodal z as average of z on w-faces
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for ( MFIter mfi(*cons_new[lev], TilingIfNotGPU()); mfi.isValid(); ++mfi )
     {
       Array4<Real> const& z_w = (mf_z_w)->array(mfi);

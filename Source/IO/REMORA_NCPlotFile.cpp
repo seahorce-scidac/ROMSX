@@ -503,6 +503,9 @@ void REMORA::WriteNCPlotFile_which(int lev, int which_subdomain, bool write_head
 
     mask_arrays_for_write(lev, (Real) fill_value);
 
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for (MFIter mfi(*cons_new[lev], false); mfi.isValid(); ++mfi) {
         auto bx = mfi.validbox();
         if (subdomain.contains(bx)) {
@@ -693,6 +696,9 @@ void REMORA::WriteNCPlotFile_which(int lev, int which_subdomain, bool write_head
     //requests.resize(0);
     //irq = 0;
     // Writing u (we loop over cons to get cell-centered box)
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for (MFIter mfi(*cons_new[lev], false); mfi.isValid(); ++mfi) {
         Box bx = mfi.validbox();
 
@@ -777,6 +783,9 @@ void REMORA::WriteNCPlotFile_which(int lev, int which_subdomain, bool write_head
     } // mfi
 
     // Writing v (we loop over cons to get cell-centered box)
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for (MFIter mfi(*cons_new[lev], false); mfi.isValid(); ++mfi) {
         Box bx = mfi.validbox();
 
@@ -864,6 +873,9 @@ void REMORA::WriteNCPlotFile_which(int lev, int which_subdomain, bool write_head
         } // in subdomain
     } // mfi
 
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for (MFIter mfi(*cons_new[lev], false); mfi.isValid(); ++mfi) {
         Box bx = mfi.validbox();
 

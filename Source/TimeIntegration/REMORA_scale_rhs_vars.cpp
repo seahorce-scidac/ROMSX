@@ -7,6 +7,9 @@ REMORA::scale_rhs_vars ()
 {
     for (int lev=0; lev<=finest_level;lev++) {
         MultiFab& mf_cons = *cons_new[lev];
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
         for ( MFIter mfi(mf_cons, TilingIfNotGPU()); mfi.isValid(); ++mfi )
         {
             Array4<Real const> const& pm   = vec_pm[lev]->array(mfi);
@@ -48,6 +51,9 @@ REMORA::scale_rhs_vars_inv ()
 {
     for (int lev=0; lev<=finest_level;lev++) {
         MultiFab& mf_cons = *cons_new[lev];
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
         for ( MFIter mfi(mf_cons, TilingIfNotGPU()); mfi.isValid(); ++mfi )
         {
             Array4<Real const> const& pm   = vec_pm[lev]->array(mfi);

@@ -274,6 +274,9 @@ REMORA::WritePlotFile ()
             containerHasElement(plot_var_names, "z_cc"))
         {
             MultiFab dmf(mf[lev], make_alias, mf_comp, AMREX_SPACEDIM);
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
             for (MFIter mfi(dmf, TilingIfNotGPU()); mfi.isValid(); ++mfi) {
                 const Box& bx = mfi.tilebox();
                 const Array4<Real> loc_arr = dmf.array(mfi);
@@ -321,6 +324,9 @@ REMORA::WritePlotFile ()
         Real dz = Geom()[lev].CellSizeArray()[2];
         int N = Geom()[lev].Domain().size()[2];
 
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
         for (MFIter mfi(mf_nd[lev], TilingIfNotGPU()); mfi.isValid(); ++mfi)
         {
             const Box& bx = mfi.tilebox();
@@ -607,6 +613,9 @@ REMORA::WriteGenericPlotfileHeaderWithBathymetry (std::ostream &HeaderFile,
 
 void
 REMORA::mask_arrays_for_write(int lev, Real fill_value) {
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for (MFIter mfi(*cons_new[lev],false); mfi.isValid(); ++mfi) {
         Box bx = mfi.tilebox();
         Box gbx1 = mfi.growntilebox(IntVect(NGROW-1,NGROW-1,0));

@@ -27,6 +27,9 @@ REMORA::sum_integrated_quantities(Real time)
         MultiFab ones_mf(grids[lev], dmap[lev], 1, 0);
         ones_mf.setVal(1.0_rt);
 
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
         for (MFIter mfi(*cons_new[lev], TilingIfNotGPU()); mfi.isValid(); ++mfi) {
             const Box& bx = mfi.tilebox();
             const Array4<      Real> kineng_arr = kineng_mf.array(mfi);
@@ -120,6 +123,9 @@ REMORA::volWgtSumMF(int lev, const MultiFab& mf, int comp, bool local, bool fine
     }
 
     MultiFab volume(grids[lev], dmap[lev], 1, 0);
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for (MFIter mfi(*cons_new[lev], TilingIfNotGPU()); mfi.isValid(); ++mfi) {
         const Box& bx = mfi.tilebox();
         const Array4<      Real> vol_arr = volume.array(mfi);

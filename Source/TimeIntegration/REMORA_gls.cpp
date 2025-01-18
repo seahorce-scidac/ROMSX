@@ -9,6 +9,9 @@ REMORA::gls_prestep (int lev, MultiFab* mf_gls, MultiFab* mf_tke,
                      const int iic, const int ntfirst, const int N, const Real dt_lev)
 {
     // temps: grad, gradL, XF, FX, FXL, EF, FE, FEL
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for ( MFIter mfi(*mf_gls, TilingIfNotGPU()); mfi.isValid(); ++mfi) {
         Array4<Real> const& gls = mf_gls->array(mfi);
         Array4<Real> const& tke = mf_tke->array(mfi);
@@ -384,6 +387,9 @@ REMORA::gls_corrector (int lev, MultiFab* mf_gls, MultiFab* mf_tke,
     bool is_periodic_in_y = geomdata.isPeriodic(1);
 
 
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for ( MFIter mfi(*mf_gls, TilingIfNotGPU()); mfi.isValid(); ++mfi )
     {
         Box   bx = mfi.tilebox();
@@ -434,6 +440,9 @@ REMORA::gls_corrector (int lev, MultiFab* mf_gls, MultiFab* mf_tke,
     (*physbcs[lev])(mf_shear2_cached,*mf_mskr,0,1,mf_shear2_cached.nGrowVect(),t_new[lev],BCVars::foextrap_bc);
     mf_CF.setVal(0.0_rt);
 
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for ( MFIter mfi(*mf_gls, TilingIfNotGPU()); mfi.isValid(); ++mfi )
     {
         Box  bx = mfi.tilebox();

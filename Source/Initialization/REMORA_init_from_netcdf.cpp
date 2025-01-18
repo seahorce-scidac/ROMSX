@@ -100,6 +100,9 @@ REMORA::init_data_from_netcdf (int lev)
 #endif
     {
     // Don't tile this since we are operating on full FABs in this routine
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for ( MFIter mfi(*cons_new[lev], false); mfi.isValid(); ++mfi )
     {
         // Define fabs for holding the initial data
@@ -141,6 +144,9 @@ REMORA::init_zeta_from_netcdf (int lev)
 #endif
         {
         // Don't tile this since we are operating on full FABs in this routine
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
         for ( MFIter mfi(*cons_new[lev], false); mfi.isValid(); ++mfi )
         {
             FArrayBox &zeta_fab  = (*vec_zeta[lev])[mfi];
@@ -201,6 +207,9 @@ REMORA::init_bathymetry_from_netcdf (int lev)
 #endif
         {
         // Don't tile this since we are operating on full FABs in this routine
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
         for ( MFIter mfi(*cons_new[lev], false); mfi.isValid(); ++mfi )
         {
             FArrayBox &h_fab     = (*vec_hOfTheConfusingName[lev])[mfi];
@@ -273,6 +282,9 @@ REMORA::init_bathymetry_from_netcdf (int lev)
     vec_xp[lev]->FillBoundary(geom[lev].periodicity());
     vec_yp[lev]->FillBoundary(geom[lev].periodicity());
 
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
     for ( MFIter mfi(*vec_pm[lev]); mfi.isValid(); ++mfi )
     {
         Box bx   = mfi.tilebox();
@@ -344,6 +356,9 @@ REMORA::init_coriolis_from_netcdf (int lev)
 #endif
         {
         // Don't tile this since we are operating on full FABs in this routine
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
         for ( MFIter mfi(*cons_new[lev], false); mfi.isValid(); ++mfi )
         {
             FArrayBox &fcor_fab  = (*vec_fcor[lev])[mfi];
@@ -385,6 +400,9 @@ REMORA::init_masks_from_netcdf (int lev)
 #endif
         {
         // Don't tile this since we are operating on full FABs in this routine
+#ifdef _OPENMP
+#pragma omp parallel if (Gpu::notInLaunchRegion())
+#endif
         for ( MFIter mfi(*cons_new[lev], false); mfi.isValid(); ++mfi )
         {
             FArrayBox &mskr_fab  = (*vec_mskr[lev])[mfi];
