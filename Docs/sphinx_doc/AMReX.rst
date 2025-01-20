@@ -7,7 +7,8 @@
 AMReX
 ==============
 
-REMORAis built on AMReX, a C++--based software framework that supports the development of structured mesh algorithms for solving systems of partial differential equations, with options for adaptive mesh refinement, on machines from laptops to exascale architectures. AMReX was developed in the U.S. Department of Energy’s Exascale Computing Project and is now a member project of the High Performance Software Foundation under the umbrella of the Linux Foundation.
+REMORA is built on `AMReX <https://github.com/AMReX-Codes/amrex>`_,
+a C++--based software framework that supports the development of structured mesh algorithms for solving systems of partial differential equations, with options for adaptive mesh refinement, on machines from laptops to exascale architectures. AMReX was developed in the U.S. Department of Energy’s Exascale Computing Project and is now a member project of the High Performance Software Foundation under the umbrella of the Linux Foundation.
 
 AMReX uses an MPI+X model of hierarchical parallelism where blocks of data are distributed across MPI ranks (typically across multiple nodes).  Fine-grained parallelism at the node level (X) is achieved using
 OpenMP for CPU-only machines, or CUDA, HIP or SYCL for NVIDIA, AMD or Intel GPUs, respectively. AMReX provides extensive support for kernel launching on GPU accelerators (using ParallelFor looping constructs and C++ lambda functions) and the effective use of various memory types, including managed, device, and pinned. Architecture-specific aspects of the software for GPUs are highly localized within the code, and essentially hidden from the application developer or user.
