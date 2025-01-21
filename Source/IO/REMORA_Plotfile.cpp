@@ -613,9 +613,6 @@ REMORA::WriteGenericPlotfileHeaderWithBathymetry (std::ostream &HeaderFile,
 
 void
 REMORA::mask_arrays_for_write(int lev, Real fill_value) {
-#ifdef _OPENMP
-#pragma omp parallel if (Gpu::notInLaunchRegion())
-#endif
     for (MFIter mfi(*cons_new[lev],false); mfi.isValid(); ++mfi) {
         Box bx = mfi.tilebox();
         Box gbx1 = mfi.growntilebox(IntVect(NGROW-1,NGROW-1,0));

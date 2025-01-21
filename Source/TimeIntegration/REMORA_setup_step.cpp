@@ -112,9 +112,6 @@ REMORA::setup_step (int lev, Real time, Real dt_lev)
 
     auto N = Geom(lev).Domain().size()[2]-1; // Number of vertical "levs" aka, NZ
 
-#ifdef _OPENMP
-#pragma omp parallel if (Gpu::notInLaunchRegion())
-#endif
     for ( MFIter mfi(S_new, TilingIfNotGPU()); mfi.isValid(); ++mfi )
     {
         Array4<Real const> const& rdrag = mf_rdrag->const_array(mfi);
@@ -142,9 +139,6 @@ REMORA::setup_step (int lev, Real time, Real dt_lev)
     FillPatch(lev, time, *vec_bustr[lev].get(), GetVecOfPtrs(vec_bustr), BCVars::u2d_simple_bc, BdyVars::null,0,true,false);
     FillPatch(lev, time, *vec_bvstr[lev].get(), GetVecOfPtrs(vec_bvstr), BCVars::v2d_simple_bc, BdyVars::null,0,true,false);
 
-#ifdef _OPENMP
-#pragma omp parallel if (Gpu::notInLaunchRegion())
-#endif
     for ( MFIter mfi(S_new, TilingIfNotGPU()); mfi.isValid(); ++mfi )
     {
         Array4<Real const> const& h     = vec_hOfTheConfusingName[lev]->const_array(mfi);
@@ -232,9 +226,6 @@ REMORA::setup_step (int lev, Real time, Real dt_lev)
     mf_W.FillBoundary(geom[lev].periodicity());
     (*physbcs[lev])(mf_W,*mf_mskr.get(),0,1,mf_W.nGrowVect(),t_new[lev],BCVars::zvel_bc);
 
-#ifdef _OPENMP
-#pragma omp parallel if (Gpu::notInLaunchRegion())
-#endif
     for ( MFIter mfi(S_old, TilingIfNotGPU()); mfi.isValid(); ++mfi )
     {
         Array4<Real const> const& Hz    = vec_Hz[lev]->const_array(mfi);

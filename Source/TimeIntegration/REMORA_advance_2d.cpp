@@ -105,9 +105,6 @@ REMORA::advance_2d (int lev,
     MultiFab mf_DUon(convert(ba,IntVect(1,0,0)),dm,1,IntVect(NGROW,NGROW,0));
     MultiFab mf_DVom(convert(ba,IntVect(0,1,0)),dm,1,IntVect(NGROW,NGROW,0));
 
-#ifdef _OPENMP
-#pragma omp parallel if (Gpu::notInLaunchRegion())
-#endif
     for ( MFIter mfi(*mf_rhoS, TilingIfNotGPU()); mfi.isValid(); ++mfi )
     {
         Array4<Real      > const& ubar = mf_ubar->array(mfi);
@@ -173,9 +170,6 @@ REMORA::advance_2d (int lev,
     mf_DUon.FillBoundary(geom[lev].periodicity());
     mf_DVom.FillBoundary(geom[lev].periodicity());
 
-#ifdef _OPENMP
-#pragma omp parallel if (Gpu::notInLaunchRegion())
-#endif
     for ( MFIter mfi(*mf_rhoS, TilingIfNotGPU()); mfi.isValid(); ++mfi )
     {
         Array4<Real const> const& rhoS = mf_rhoS->const_array(mfi);
