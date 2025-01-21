@@ -55,6 +55,10 @@ enum class EOSType {
     linear, nonlinear
 };
 
+enum class BottomStressType {
+    linear, quadratic, logarithmic
+};
+
 struct SolverChoice {
   public:
     void init_params()
@@ -84,8 +88,11 @@ struct SolverChoice {
             amrex::Error("UV advection scheme unknown.");
 
         pp.query("rdrag", rdrag);
+        pp.query("rdrag2", rdrag2);
         pp.query("Zos", Zos);
         pp.query("Zob", Zob);
+        pp.query("Cdb_max", Cdb_max);
+        pp.query("Cdb_min", Cdb_min);
 
         // Order of spatial discretization
         pp.query("spatial_order", spatial_order);
@@ -188,6 +195,18 @@ struct SolverChoice {
             } else {
                 amrex::Abort("Don't know this coriolis_type");
             }
+        }
+
+        static std::string bottom_stress_type_string = "linear";
+        pp.query("bottom_stress_type", bottom_stress_type_string);
+        if (amrex::toLower(bottom_stress_type_string) == "linear") {
+            bottom_stress_type = BottomStressType::linear;
+        } else if (amrex::toLower(bottom_stress_type_string) == "quadratic") {
+            bottom_stress_type = BottomStressType::quadratic;
+        } else if (amrex::toLower(bottom_stress_type_string) == "logarithmic") {
+            bottom_stress_type = BottomStressType::logarithmic;
+        } else {
+            amrex::Abort("Don't know this bottom_stress_type");
         }
 
         amrex::Real tnu2_salt = amrex::Real(0.0);
@@ -401,6 +420,9 @@ struct SolverChoice {
     // EOS type
     EOSType eos_type;
 
+    // Bottom stress type
+    BottomStressType bottom_stress_type;
+
     // Mixing type and parameters
     VertMixingType vert_mixing_type;
     HorizMixingType horiz_mixing_type;
@@ -411,12 +433,17 @@ struct SolverChoice {
     amrex::Real theta_b = amrex::Real(0.0);
     amrex::Real tcline  = amrex::Real(150.0);
 
-    // Linear drag coefficient
+    // Linear drag coefficient [m/s]
     amrex::Real rdrag = amrex::Real(3e-4);
+    // Quadratic drag coefficient [dimensionless]
+    amrex::Real rdrag2 = amrex::Real(3e-3);
 
-    // Momentum stress scales
+    // Momentum stress scales [m]
     amrex::Real Zob = amrex::Real(2e-2);
     amrex::Real Zos = amrex::Real(2e-2);
+
+    amrex::Real Cdb_max = amrex::Real(0.5);
+    amrex::Real Cdb_min = amrex::Real(1e-6);
 
     // Linear equation of state parameters
     amrex::Real R0 = amrex::Real(1028); // background density value (Kg/m3) used in Linear Equation of State
