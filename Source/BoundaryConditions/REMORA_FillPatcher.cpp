@@ -162,9 +162,6 @@ void REMORAFillPatcher::BuildMask (BoxArray const& fba,
     com_ba.complementIn(com_bl, fba_bnd);
 
     // Fill mask based upon the com_bl BoxList
-#ifdef _OPENMP
-#pragma omp parallel if (Gpu::notInLaunchRegion())
-#endif
     for (MFIter mfi(*m_cf_mask); mfi.isValid(); ++mfi) {
         const Box& vbx = mfi.validbox();
         const Array4<int>& mask_arr = m_cf_mask->array(mfi);
@@ -235,9 +232,6 @@ void REMORAFillPatcher::InterpFace (MultiFab& fine,
         }
     }
 
-#ifdef _OPENMP
-#pragma omp parallel if (Gpu::notInLaunchRegion())
-#endif
     for (MFIter mfi(fine); mfi.isValid(); ++mfi)
     {
         Box const& fbx = mfi.validbox();
@@ -341,9 +335,6 @@ void REMORAFillPatcher::InterpCell (MultiFab& fine,
     IndexType m_ixt = fine.boxArray().ixType();
     Box const& cdomain = amrex::convert(m_cgeom.Domain(), m_ixt);
 
-#ifdef _OPENMP
-#pragma omp parallel if (Gpu::notInLaunchRegion())
-#endif
     for (MFIter mfi(fine); mfi.isValid(); ++mfi) {
         Box const& fbx = mfi.validbox();
 

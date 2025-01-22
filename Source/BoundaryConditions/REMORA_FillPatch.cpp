@@ -138,9 +138,6 @@ REMORA::FillPatch (int lev, Real time, MultiFab& mf_to_fill, Vector<MultiFab*> c
              (mf_box.ixType() == IndexType(IntVect(0,1,0))) )
         {
             int khi = geom[lev].Domain().bigEnd(2);
-#ifdef _OPENMP
-#pragma omp parallel if (Gpu::notInLaunchRegion())
-#endif
             for (MFIter mfi(mf_to_fill); mfi.isValid(); ++mfi)
             {
                 Box gbx  = mfi.growntilebox(); // Note this is face-centered since vel is

@@ -552,9 +552,6 @@ REMORA::set_pm_pn (int lev)
     vec_pm[lev]->setVal(dxi[0]); vec_pm[lev]->FillBoundary(geom[lev].periodicity());
     vec_pn[lev]->setVal(dxi[1]); vec_pn[lev]->FillBoundary(geom[lev].periodicity());
 
-#ifdef _OPENMP
-#pragma omp parallel if (Gpu::notInLaunchRegion())
-#endif
     for ( MFIter mfi(*vec_xr[lev], TilingIfNotGPU()); mfi.isValid(); ++mfi )
     {
         Array4<Real> const& xr = vec_xr[lev]->array(mfi);
@@ -601,9 +598,6 @@ REMORA::set_zeta_to_Ztavg (int lev)
 {
     std::unique_ptr<MultiFab>& mf_zeta = vec_zeta[lev];
     std::unique_ptr<MultiFab>& mf_Zt_avg1  = vec_Zt_avg1[lev];
-#ifdef _OPENMP
-#pragma omp parallel if (Gpu::notInLaunchRegion())
-#endif
     for ( MFIter mfi(*vec_zeta[lev], TilingIfNotGPU()); mfi.isValid(); ++mfi )
     {
         Array4<const Real> const& Zt_avg1 = (mf_Zt_avg1)->const_array(mfi);
@@ -622,9 +616,6 @@ REMORA::set_zeta_to_Ztavg (int lev)
 void
 REMORA::update_mskp (int lev)
 {
-#ifdef _OPENMP
-#pragma omp parallel if (Gpu::notInLaunchRegion())
-#endif
     for ( MFIter mfi(*vec_mskr[lev], TilingIfNotGPU()); mfi.isValid(); ++mfi )
     {
         Array4<const Real> const& mskr = vec_mskr[lev]->const_array(mfi);
