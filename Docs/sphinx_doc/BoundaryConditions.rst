@@ -25,7 +25,7 @@ To set boundary conditions per domain side for all variables, set
 ``remora.boundary_per_variable = false``. This is the default behavior.
 
 The information for each face is preceded by
-``bc.xlo.type``, ``bc.xhi.type``, ``bc.ylo.type``, or ``bc.yhi.type``. Spelling of the type matters; capitalization does not. The
+``remora.bc.xlo.type``, ``remora.bc.xhi.type``, ``remora.bc.ylo.type``, or ``remora.bc.yhi.type``. Spelling of the type matters; capitalization does not. The
 options for boundary conditions per side are listed below.
 
 - periodic
@@ -45,10 +45,10 @@ For example, setting
 
 ::
 
-    bc.xlo.type = "Inflow"
-    bc.xhi.type = "Outflow"
-    bc.ylo.type = "periodic" #optional
-    bc.yhi.type = "periodic" #optional
+    remora.bc.xlo.type = "Inflow"
+    remora.bc.xhi.type = "Outflow"
+    remora.bc.ylo.type = "periodic" #optional
+    remora.bc.yhi.type = "periodic" #optional
 
     geometry.is_periodic = 0 1 0
 
@@ -64,15 +64,15 @@ Boundary per variable
 To set different boundary conditions for different variables on each side of the domain, set ``remora.boundary_per_variable = true``.
 If true, conditions must be set for all of the following variables.
 
-- temperature: ``bc.temp.type``
-- salinity: ``bc.salt.type``
-- passive scalar: ``bc.scalar.type``
-- 3D u-velocity: ``bc.u.type``
-- 3D v-velocity: ``bc.v.type``
-- 2D u-velocity: ``bc.ubar.type``
-- 2D v-velocity: ``bc.vbar.type``
-- sea surface height: ``bc.zeta.type``
-- turbulent kinetic energy: ``bc.tke.type``
+- temperature: ``remora.bc.temp.type``
+- salinity: ``remora.bc.salt.type``
+- passive scalar: ``remora.bc.scalar.type``
+- 3D u-velocity: ``remora.bc.u.type``
+- 3D v-velocity: ``remora.bc.v.type``
+- 2D u-velocity: ``remora.bc.ubar.type``
+- 2D v-velocity: ``remora.bc.vbar.type``
+- sea surface height: ``remora.bc.zeta.type``
+- turbulent kinetic energy: ``remora.bc.tke.type``
 
 They must be set to a list of four conditions in the order West, South, East, North. The options are
 
@@ -94,17 +94,17 @@ For example, setting
 
 ::
 
-    #                 West      South    East      North
-    bc.temp.type   =  periodic  clamped  periodic  clamped
-    bc.salt.type   =  periodic  clamped  periodic  clamped
-    bc.scalar.type =  periodic  clamped  periodic  clamped
-    bc.u.type      =  periodic  clamped  periodic  clamped
-    bc.v.type      =  periodic  clamped  periodic  clamped
-    bc.w.type      =  periodic  clamped  periodic  clamped
-    bc.ubar.type   =  periodic  flather  periodic  flather
-    bc.vbar.type   =  periodic  flather  periodic  flather
-    bc.zeta.type   =  periodic  chapman  periodic  chapman
-    bc.tke.type    =  periodic  outflow  periodic  outflow
+    #                        West      South    East      North
+    remora.bc.temp.type   =  periodic  clamped  periodic  clamped
+    remora.bc.salt.type   =  periodic  clamped  periodic  clamped
+    remora.bc.scalar.type =  periodic  clamped  periodic  clamped
+    remora.bc.u.type      =  periodic  clamped  periodic  clamped
+    remora.bc.v.type      =  periodic  clamped  periodic  clamped
+    remora.bc.w.type      =  periodic  clamped  periodic  clamped
+    remora.bc.ubar.type   =  periodic  flather  periodic  flather
+    remora.bc.vbar.type   =  periodic  flather  periodic  flather
+    remora.bc.zeta.type   =  periodic  chapman  periodic  chapman
+    remora.bc.tke.type    =  periodic  outflow  periodic  outflow
 
     geometry.is_periodic = 1 0 0
 
@@ -167,10 +167,10 @@ As an example,
 
 ::
 
-    bc.xlo.type                =   "Inflow"
-    bc.xlo.velocity            =   1. 0.9  0.
-    bc.xlo.temp                =   15.
-    bc.xlo.scalar              =   2.
+    remora.bc.xlo.type                =   "Inflow"
+    remora.bc.xlo.velocity            =   1. 0.9  0.
+    remora.bc.xlo.temp                =   15.
+    remora.bc.xlo.scalar              =   2.
 
 sets the boundary condition type at the low x face to be an inflow with xlo.type = “Inflow”.
 
@@ -180,11 +180,11 @@ We note that ``noslipwall`` allows for non-zero tangential velocities to be spec
 
     geometry.is_periodic = 1 0 0
 
-    bc.ylo.type = "NoSlipWall"
-    bc.yhi.type = "NoSlipWall"
+    remora.bc.ylo.type = "NoSlipWall"
+    remora.bc.yhi.type = "NoSlipWall"
 
-    bc.ylo.velocity    = 0.0 0.0 0.0
-    bc.yhi.velocity    = 2.0 0.0 0.0
+    remora.bc.ylo.velocity    = 0.0 0.0 0.0
+    remora.bc.yhi.velocity    = 2.0 0.0 0.0
 
 
 It is important to note that external Dirichlet boundary data should be specified

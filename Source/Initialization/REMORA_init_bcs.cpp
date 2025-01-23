@@ -124,7 +124,7 @@ void REMORA::init_bcs ()
 
     auto f_by_side = [this, &f_set_var_bc] (std::string const& bcid, Orientation ori)
     {
-        ParmParse pp("bc."+bcid);
+        ParmParse pp("remora.bc."+bcid);
         std::string bc_type_in = "null";
         // Default z directions to slipwall
         if (bcid=="zlo" or bcid=="zhi") bc_type_in = "slipwall";

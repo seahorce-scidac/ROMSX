@@ -15,16 +15,16 @@ amr.n_cell           =  10 16 20
 geometry.is_periodic = 0 0 0
 
 remora.boundary_per_variable = 1
-##             WEST     SOUTH    EAST     NORTH
-bc.temp.type   =  clamped  clamped  clamped  clamped
-bc.salt.type   =  clamped  clamped  clamped  clamped
-bc.scalar.type =  clamped  clamped  clamped  clamped
-bc.u.type      =  clamped  clamped  clamped  clamped
-bc.v.type      =  clamped  clamped  clamped  clamped
-bc.ubar.type   =  flather  flather  flather  flather
-bc.vbar.type   =  flather  flather  flather  flather
-bc.zeta.type   =  chapman  chapman  chapman  chapman
-bc.tke.type    =  outflow  outflow  outflow  outflow
+##                       WEST     SOUTH    EAST     NORTH
+remora.bc.temp.type   =  clamped  clamped  clamped  clamped
+remora.bc.salt.type   =  clamped  clamped  clamped  clamped
+remora.bc.scalar.type =  clamped  clamped  clamped  clamped
+remora.bc.u.type      =  clamped  clamped  clamped  clamped
+remora.bc.v.type      =  clamped  clamped  clamped  clamped
+remora.bc.ubar.type   =  flather  flather  flather  flather
+remora.bc.vbar.type   =  flather  flather  flather  flather
+remora.bc.zeta.type   =  chapman  chapman  chapman  chapman
+remora.bc.tke.type    =  outflow  outflow  outflow  outflow
 
 # TIME STEP CONTROL
 remora.fixed_dt            = 200.0 # Timestep size (seconds)

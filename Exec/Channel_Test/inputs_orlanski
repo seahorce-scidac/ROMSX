@@ -15,15 +15,15 @@ amr.n_cell           =   20     60      50
 geometry.is_periodic = 0 0 0
 
 remora.boundary_per_variable = 1
-bc.temp.type   =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
-bc.salt.type   =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
-bc.scalar.type =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
-bc.u.type      =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
-bc.v.type      =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
-bc.ubar.type   =  outflow outflow outflow outflow
-bc.vbar.type   =  outflow outflow outflow outflow
-bc.zeta.type   =  outflow outflow outflow outflow
-bc.tke.type    =  outflow outflow outflow outflow
+remora.bc.temp.type   =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
+remora.bc.salt.type   =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
+remora.bc.scalar.type =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
+remora.bc.u.type      =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
+remora.bc.v.type      =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
+remora.bc.ubar.type   =  outflow outflow outflow outflow
+remora.bc.vbar.type   =  outflow outflow outflow outflow
+remora.bc.zeta.type   =  outflow outflow outflow outflow
+remora.bc.tke.type    =  outflow outflow outflow outflow
 
 # TIME STEP CONTROL
 remora.fixed_dt       = 400.0 # Timestep size (seconds)

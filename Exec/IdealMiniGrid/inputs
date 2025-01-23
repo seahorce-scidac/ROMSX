@@ -14,10 +14,10 @@ amr.n_cell           =  10 16 20
 
 geometry.is_periodic = 0 0 0
 
-bc.xlo.type = "clamped"
-bc.xhi.type = "clamped"
-bc.ylo.type = "clamped"
-bc.yhi.type = "clamped"
+remora.bc.xlo.type = "clamped"
+remora.bc.xhi.type = "clamped"
+remora.bc.ylo.type = "clamped"
+remora.bc.yhi.type = "clamped"
 
 # TIME STEP CONTROL
 remora.fixed_dt            = 200.0 # Timestep size (seconds)

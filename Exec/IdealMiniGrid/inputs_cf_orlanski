@@ -15,16 +15,16 @@ amr.n_cell           =  10 16 20
 geometry.is_periodic = 0 0 0
 
 remora.boundary_per_variable = 1
-##                WEST              SOUTH             EAST              NORTH
-bc.temp.type   =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
-bc.salt.type   =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
-bc.scalar.type =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
-bc.u.type      =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
-bc.v.type      =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
-bc.ubar.type   =  flather           flather           flather          flather
-bc.vbar.type   =  flather           flather           flather          flather
-bc.zeta.type   =  chapman           chapman           chapman          chapman
-bc.tke.type    =  outflow           outflow           outflow          outflow
+##                      WEST              SOUTH             EAST              NORTH
+remorabc.temp.type   =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
+remorabc.salt.type   =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
+remorabc.scalar.type =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
+remorabc.u.type      =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
+remorabc.v.type      =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
+remorabc.ubar.type   =  flather           flather           flather          flather
+remorabc.vbar.type   =  flather           flather           flather          flather
+remorabc.zeta.type   =  chapman           chapman           chapman          chapman
+remorabc.tke.type    =  outflow           outflow           outflow          outflow
 
 # TIME STEP CONTROL
 remora.fixed_dt            = 200.0 # Timestep size (seconds)
