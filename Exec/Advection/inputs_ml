@@ -2,8 +2,6 @@
 max_step = 10
 stop_time = 300000.0
 
-amrex.fpe_trap_invalid = 1
-
 fabarray.mfiter_tile_size = 1024 1024 1024
 
 # PROBLEM SIZE & GEOMETRY
@@ -44,7 +42,6 @@ remora.plotfile_type = amrex
 remora.use_coriolis = false
 remora.flat_bathymetry=true
 remora.tracer_horizontal_advection_scheme = "centered4" # upstream3 or centered4
-remora.spatial_order = 2
 
 # Linear EOS parameters
 remora.R0    = 1027.0  # background density value (Kg/m3) used in Linear Equation of State
@@ -63,12 +60,6 @@ remora.rdrag=0.0
 # PROBLEM PARAMETERS (velocity fields)
 prob.u_0   =1.0e-0
 prob.v_0   = -1.0e-0
-
-#remora.refinement_indicators = box1
-#remora.box1.max_level = 1
-#remora.box1.in_box_lo =     20000.   20000. -150.
-#remora.box1.in_box_hi =  30000. 30000. 0.
-#remora.coupling_type = "TwoWay"
 
 remora.refinement_indicators = scalar
 remora.scalar.max_level = 1

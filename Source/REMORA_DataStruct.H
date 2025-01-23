@@ -94,9 +94,6 @@ struct SolverChoice {
         pp.query("Cdb_max", Cdb_max);
         pp.query("Cdb_min", Cdb_min);
 
-        // Order of spatial discretization
-        pp.query("spatial_order", spatial_order);
-
         // Include salinity?
         pp.query("use_salt", use_salt);
 

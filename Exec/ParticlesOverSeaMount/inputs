@@ -1,9 +1,6 @@
 # ------------------  INPUTS TO MAIN PROGRAM  -------------------
-max_step = 300
-stop_time = 30000.0
 max_step = 80
-
-amrex.fpe_trap_invalid = 1
+stop_time = 30000.0
 
 fabarray.mfiter_tile_size = 1024 1024 1024
 
@@ -50,7 +47,6 @@ remora.plotfile_type = amrex
 # SOLVER CHOICE
 remora.use_coriolis = true
 remora.tracer_horizontal_advection_scheme = "upstream3" # upstream3 or centered4
-remora.spatial_order = 2
 
 # Coriolis params
 remora.coriolis_f0 = -8.26e-5
