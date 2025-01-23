@@ -1,0 +1,132 @@
+===============================================================================
+ REMORA Job Information
+===============================================================================
+inputs file: Upwelling_logdrag.i
+
+number of MPI processes: 1
+
+CPU time used since start of simulation (CPU-hours): 0.00020109
+
+===============================================================================
+ Plotfile Information
+===============================================================================
+output data / time: Wed Jan 22 16:47:00 2025
+output dir:         /home/klion/software/REMORA_clean/Exec/Upwelling
+
+
+===============================================================================
+ Build Information
+===============================================================================
+build date:    2024-12-06 13:12:16.695936
+build machine: Linux varan 5.15.0-122-generic #132~20.04.1-Ubuntu SMP Fri Aug 30 15:50:07 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+build dir:     /home/klion/software/REMORA_clean/Exec/Upwelling
+AMReX dir:     ../../Submodules/AMReX
+
+COMP:          gnu
+COMP version:  9.4.0
+
+
+REMORA       git hash: b5813a5-dirty
+AMReX       git hash: 24.10-11-g62c2a81ea
+
+
+===============================================================================
+ Grid Information
+===============================================================================
+ level: 0
+   number of boxes = 1
+   maximum zones   = 41 80 16 
+
+ Boundary conditions
+   -x: Periodic
+   +x: Periodic
+   -y: SlipWall
+   +y: SlipWall
+   -z: SlipWall
+   +z: SlipWall
+
+
+===============================================================================
+ Inputs File Parameters
+===============================================================================
+DistributionMapping.verbose = 0
+amr.blocking_factor = 1
+amr.check_input = 1
+amr.grid_eff = 0.69999999999999996
+amr.max_grid_size = 2048
+amr.max_level = 0
+amr.n_cell = 41 80 16
+amr.n_error_buf = 0
+amr.n_proper = 2
+amr.refine_grid_layout = 1
+amr.refine_grid_layout_x = 1
+amr.refine_grid_layout_y = 1
+amr.refine_grid_layout_z = 0
+amr.v = 1
+amrex.abort_on_out_of_gpu_memory = 0
+amrex.abort_on_unused_inputs = 0
+amrex.async_out = 0
+amrex.async_out_nfiles = 64
+amrex.fpe_trap_invalid = 1
+amrex.fpe_trap_overflow = 0
+amrex.fpe_trap_zero = 0
+amrex.handle_sigabrt = 1
+amrex.handle_sigfpe = 1
+amrex.handle_sigill = 1
+amrex.handle_sigint = 1
+amrex.handle_sigsegv = 1
+amrex.handle_sigterm = 0
+amrex.init_snan = 1
+amrex.mf.alloc_single_chunk = 0
+amrex.signal_handling = 1
+amrex.the_arena_init_size = 0
+amrex.the_arena_is_managed = 0
+amrex.the_arena_release_threshold = 9223372036854775807
+amrex.the_async_arena_release_threshold = 9223372036854775807
+amrex.the_comms_arena_init_size = 8388608
+amrex.the_comms_arena_release_threshold = 9223372036854775807
+amrex.the_device_arena_init_size = 8388608
+amrex.the_device_arena_release_threshold = 9223372036854775807
+amrex.the_managed_arena_init_size = 8388608
+amrex.the_managed_arena_release_threshold = 9223372036854775807
+amrex.the_pinned_arena_init_size = 8388608
+amrex.the_pinned_arena_release_threshold = 9223372036854775807
+amrex.throw_exception = 0
+amrex.use_gpu_aware_mpi = 0
+amrex.vector_growth_factor = 1.5
+amrex.verbose = 1
+bc.yhi.type = SlipWall
+bc.ylo.type = SlipWall
+fabarray.comm_tile_size = 1024000 1024000 1024000
+fabarray.mfiter_tile_size = 1024 1024 1024
+geometry.coord_sys = 0
+geometry.is_periodic = 1 0 0
+geometry.prob_hi = 41000. 80000. 0.
+geometry.prob_lo = 0. 0. -150.
+max_step = 10
+remora.R0 = 1027.0
+remora.S0 = 35.0
+remora.Scoef = 0.0
+remora.T0 = 14.0
+remora.Tcoef = 1.7e-4
+remora.bottom_stress_type = logarithmic
+remora.check_file = chk
+remora.check_int = -57600
+remora.coriolis_beta = 0.0
+remora.coriolis_f0 = -8.26e-5
+remora.coriolis_type = beta_plane
+remora.fixed_dt = 300.0
+remora.fixed_fast_dt = 10.0
+remora.fixed_ndtfast_ratio = 30
+remora.flat_bathymetry = false
+remora.plot_file = plt_logdrg
+remora.plot_int = 100
+remora.plot_vars = salt temp x_velocity y_velocity z_velocity
+remora.plotfile_type = amrex
+remora.rho0 = 1025.0
+remora.spatial_order = 2
+remora.sum_interval = 1
+remora.tcline = 25.0
+remora.tracer_horizontal_advection_scheme = upstream3
+remora.use_coriolis = true
+remora.v = 0

@@ -588,8 +588,40 @@ List of Parameters
 +-----------------------------------+----------------------------------------+-------------------+----------------+
 | **remora.Akt_bak**                | Minimum/initial value of Akt           | Real number       | 1.0e-6         |
 +-----------------------------------+----------------------------------------+-------------------+----------------+
-| **remora.rdrag**                  | Bottom drag                            | Real number       | 3.0e-4         |
-+-----------------------------------+----------------------------------------+-------------------+----------------+
+
+.. _list-of-parameters-drag:
+
+List of drag-related parameters
+--------------------------------
+
++-----------------------------------+------------------------------------------+-------------------+----------------+
+| Parameter                         | Definition                               | Acceptable        | Default        |
+|                                   |                                          | Values            |                |
++===================================+==========================================+===================+================+
+| **remora.bottom_stress_type**     | Bottom drag type                         | linear            | linear         |
+|                                   |                                          | / quadratic       |                |
+|                                   |                                          | / logarithmic     |                |
++-----------------------------------+------------------------------------------+-------------------+----------------+
+| **remora.rdrag**                  | Linear drag coefficient (used if         | Positive real     | 3.0e-4         |
+|                                   | remora.bottom_stress_type = linear)      | number            |                |
++-----------------------------------+------------------------------------------+-------------------+----------------+
+| **remora.rdrag2**                 | Quadratic drag coefficient (used if      | Positive real     | 3.0e-3         |
+|                                   | remora.bottom_stress_type = quadratic)   | number            |                |
++-----------------------------------+------------------------------------------+-------------------+----------------+
+| **remora.Zob**                    | Bottom roughness [m] (used if            | Positive real     | 0.02           |
+|                                   | remora.bottom_stress_type = logarithmic  | number            |                |
+|                                   | and for GLS                              |                   |                |
++-----------------------------------+------------------------------------------+-------------------+----------------+
+| **remora.Zos**                    | Surface roughness [m] (used for GLS)     | Positive real     | 0.02           |
+|                                   |                                          | number            |                |
++-----------------------------------+------------------------------------------+-------------------+----------------+
+| **remora.Cdb_min**                | Minimum threshold for transfer           | Positive real     | 1.0e-6         |
+|                                   | coefficient of momentum                  | number            |                |
++-----------------------------------+------------------------------------------+-------------------+----------------+
+| **remora.Cdb_max**                | Maximum threshold for transfer           | Positive real     | 0.5            |
+|                                   | coefficient of momentum                  | number            |                |
++-----------------------------------+------------------------------------------+-------------------+----------------+
+
 
 .. _list-of-parameters-gls:
 
