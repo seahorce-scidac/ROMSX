@@ -4,7 +4,7 @@
 Regression Tests
 ================
 
-There are currently 9 accuracy tests which are run as part of every PR.
+There are currently 12 accuracy tests which are run as part of every PR on a range of architectures.
 The CI tests use cmake and are based on the version
 of AMReX in the REMORA submodule. This suite can be run following the
 instructions in :ref:`Testing`<Testing>`.
@@ -25,39 +25,57 @@ Continuous Integration (CI) Tests
 
 The following problems are currently tested in the CI. More details about the problems underlying these tests are given in :ref:`sec:verification`.
 
-+----------------------+----------+----------+----------+-----------------------+
-| Test                 | nx ny nz | xbc      | ybc      | Other                 |
-+======================+==========+==========+==========+=======================+
-| Advection            | 81 81 16 | Periodic | Periodic |                       |
-+----------------------+----------+----------+----------+-----------------------+
-| Advection_ML         | 80 80 16 | Periodic | Periodic | multilevel            |
-+----------------------+----------+----------+----------+-----------------------+
-| Channel_Test         | 20 60 50 | Periodic | SlipWall | Coriolis              |
-|                      |          |          |          |                       |
-|                      |          |          |          | GLS mixing scheme     |
-|                      |          |          |          |                       |
-|                      |          |          |          | non-flat bathymetry   |
-+----------------------+----------+----------+----------+-----------------------+
-| DoubleGyre           | 54 108 4 | SlipWall | SlipWall | Coriolis              |
-+----------------------+----------+----------+----------+-----------------------+
-| DoublyPeriodic       | 41 80 16 | Periodic | Periodic | Coriolis              |
-+----------------------+----------+----------+----------+-----------------------+
-| DoublyPeriodic_bathy | 41 80 16 | Periodic | Periodic | Coriolis              |
-|                      |          |          |          |                       |
-|                      |          |          |          | non-flat bathymetry   |
-+----------------------+----------+----------+----------+-----------------------+
-| Seamount             | 49 48 13 | Periodic | Periodic | Coriolis              |
-+----------------------+----------+----------+----------+-----------------------+
-| Upwelling            | 41 80 16 | Periodic | SlipWall | Coriolis              |
-|                      |          |          |          |                       |
-|                      |          |          |          | non-flat bathymetry   |
-+----------------------+----------+----------+----------+-----------------------+
-| Upwelling_GLS        | 41 80 16 | Periodic | SlipWall | Coriolis              |
-|                      |          |          |          |                       |
-|                      |          |          |          | non-flat bathymetry   |
-|                      |          |          |          |                       |
-|                      |          |          |          | GLS mixing scheme     |
-+----------------------+----------+----------+----------+-----------------------+
++----------------------+----------+----------+----------+---------------------------------+
+| Test                 | nx ny nz | xbc      | ybc      | Other                           |
++======================+==========+==========+==========+=================================+
+| Advection            | 81 81 16 | Periodic | Periodic |                                 |
++----------------------+----------+----------+----------+---------------------------------+
+| Advection_ML         | 80 80 16 | Periodic | Periodic | multilevel                      |
++----------------------+----------+----------+----------+---------------------------------+
+| Channel_Test         | 20 60 50 | Periodic | SlipWall | Coriolis                        |
+|                      |          |          |          |                                 |
+|                      |          |          |          | GLS mixing scheme               |
+|                      |          |          |          |                                 |
+|                      |          |          |          | non-flat bathymetry             |
++----------------------+----------+----------+----------+---------------------------------+
+| DoubleGyre           | 54 108 4 | SlipWall | SlipWall | Coriolis                        |
++----------------------+----------+----------+----------+---------------------------------+
+| DoublyPeriodic       | 41 80 16 | Periodic | Periodic | Coriolis                        |
++----------------------+----------+----------+----------+---------------------------------+
+| DoublyPeriodic_bathy | 41 80 16 | Periodic | Periodic | Coriolis                        |
+|                      |          |          |          |                                 |
+|                      |          |          |          | non-flat bathymetry             |
++----------------------+----------+----------+----------+---------------------------------+
+| Seamount             | 49 48 13 | Periodic | Periodic | Coriolis                        |
++----------------------+----------+----------+----------+---------------------------------+
+| Upwelling            | 41 80 16 | Periodic | SlipWall | Coriolis                        |
+|                      |          |          |          |                                 |
+|                      |          |          |          | non-flat bathymetry             |
++----------------------+----------+----------+----------+---------------------------------+
+| Upwelling_GLS        | 41 80 16 | Periodic | SlipWall | Coriolis                        |
+|                      |          |          |          |                                 |
+|                      |          |          |          | non-flat bathymetry             |
+|                      |          |          |          |                                 |
+|                      |          |          |          | GLS mixing scheme               |
++----------------------+----------+----------+----------+---------------------------------+
+| Upwelling_NLEOS      | 41 80 16 | Periodic | SlipWall | Coriolis                        |
+|                      |          |          |          |                                 |
+|                      |          |          |          | non-flat bathymetry             |
+|                      |          |          |          |                                 |
+|                      |          |          |          | nonlinear equation of state     |
++----------------------+----------+----------+----------+---------------------------------+
+| Upwelling_logdrag    | 41 80 16 | Periodic | SlipWall | Coriolis                        |
+|                      |          |          |          |                                 |
+|                      |          |          |          | non-flat bathymetry             |
+|                      |          |          |          |                                 |
+|                      |          |          |          | logarithmic bottom stress       |
++----------------------+----------+----------+----------+---------------------------------+
+| Upwelling_qdrag      | 41 80 16 | Periodic | SlipWall | Coriolis                        |
+|                      |          |          |          |                                 |
+|                      |          |          |          | non-flat bathymetry             |
+|                      |          |          |          |                                 |
+|                      |          |          |          | quadratic bottom stress         |
++----------------------+----------+----------+----------+---------------------------------+
 
 Nightly Regression Tests on CPU
 -------------------------------
@@ -408,9 +426,17 @@ Based on :ref:`Upwelling<upwelling-desc>`, which always includes Coriolis and no
 +----------------------------------------+--------------+------------------+-------------------+----------------------------------+
 | Upwelling-OMP                          | 41 80 16     | Periodic         | SlipWall          | MPI + OpenMP                     |
 +----------------------------------------+--------------+------------------+-------------------+----------------------------------+
+| Upwelling-logDrag-OMP                  | 41 80 16     | Periodic         | SlipWall          | MPI + OpenMP                     |
+|                                        |              |                  |                   |                                  |
+|                                        |              |                  |                   | logarithmic bottom stress        |
++----------------------------------------+--------------+------------------+-------------------+----------------------------------+
 | Upwelling-nonlinEOS-OMP                | 41 80 16     | Periodic         | SlipWall          | MPI + OpenMP                     |
 |                                        |              |                  |                   |                                  |
 |                                        |              |                  |                   | nonlinear equation of state      |
++----------------------------------------+--------------+------------------+-------------------+----------------------------------+
+| Upwelling-quadDrag-OMP                 | 41 80 16     | Periodic         | SlipWall          | MPI + OpenMP                     |
+|                                        |              |                  |                   |                                  |
+|                                        |              |                  |                   | quadratic bottom stress          |
 +----------------------------------------+--------------+------------------+-------------------+----------------------------------+
 | Upwelling-OMP-1grid                    | 41 80 16     | Periodic         | SlipWall          | OpenMP                           |
 +----------------------------------------+--------------+------------------+-------------------+----------------------------------+
@@ -731,9 +757,17 @@ Based on :ref:`Upwelling<upwelling-desc>`, which always includes Coriolis and no
 +----------------------------------------+--------------+------------------+-------------------+----------------------------------+
 | Upwelling-1grid                        | 41 80 16     | Periodic         | SlipWall          |                                  |
 +----------------------------------------+--------------+------------------+-------------------+----------------------------------+
+| Upwelling-logDrag                      | 41 80 16     | Periodic         | SlipWall          | MPI                              |
+|                                        |              |                  |                   |                                  |
+|                                        |              |                  |                   | logarithmic bottom stress        |
++----------------------------------------+--------------+------------------+-------------------+----------------------------------+
 | Upwelling-nonlinEOS                    | 41 80 16     | Periodic         | SlipWall          | MPI                              |
 |                                        |              |                  |                   |                                  |
 |                                        |              |                  |                   | nonlinear equation of state      |
++----------------------------------------+--------------+------------------+-------------------+----------------------------------+
+| Upwelling-quadDrag                     | 41 80 16     | Periodic         | SlipWall          | MPI                              |
+|                                        |              |                  |                   |                                  |
+|                                        |              |                  |                   | quadratic bottom stress          |
 +----------------------------------------+--------------+------------------+-------------------+----------------------------------+
 | Upwelling-x                            | 41 80 16     | SlipWall         | Periodic          | MPI                              |
 +----------------------------------------+--------------+------------------+-------------------+----------------------------------+
