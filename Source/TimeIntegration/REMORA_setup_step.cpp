@@ -115,6 +115,10 @@ REMORA::setup_step (int lev, Real time, Real dt_lev)
 
     auto N = Geom(lev).Domain().size()[2]-1; // Number of vertical "levs" aka, NZ
 
+    const Real vonKar = solverChoice.vonKar;
+    const Real Cdb_min = solverChoice.Cdb_min;
+    const Real Cdb_max = solverChoice.Cdb_max;
+
     for ( MFIter mfi(S_new, TilingIfNotGPU()); mfi.isValid(); ++mfi )
     {
         Array4<Real      > const& bustr = mf_bustr->array(mfi);
@@ -164,8 +168,8 @@ REMORA::setup_step (int lev, Real time, Real dt_lev)
             ParallelFor(gbx2D, [=] AMREX_GPU_DEVICE (int i, int j, int )
             {
                 Real logz = 1.0_rt / (std::log((z_r(i,j,0) - z_w(i,j,0)) / ZoBot(i,j,0)));
-                Real cff = solverChoice.vonKar * solverChoice.vonKar * logz * logz;
-                logdrg_tmp(i,j,0) = std::min(solverChoice.Cdb_max,std::max(solverChoice.Cdb_min,cff));
+                Real cff = vonKar * vonKar * logz * logz;
+                logdrg_tmp(i,j,0) = std::min(Cdb_max,std::max(Cdb_min,cff));
             });
             ParallelFor(ubx1D, [=] AMREX_GPU_DEVICE (int i, int j, int )
             {
