@@ -65,6 +65,22 @@ provides the underlying performance-portable software infrastructure for block-s
 REMORA, like ROMS, is a regional model, meaning that it is generally used for limited domains, 
 and as such requires boundary conditions derived analytically, or from larger-scale models.
 
+# Statement of need
+
+Most widely used ocean modeling codes today do not have the
+ability to use GPU acceleration, which limits their ability to
+efficiently utilize current and next-generation high performance computing
+architectures.  REMORA provides an ocean modeling capability (based on ROMS, a proven FORTRAN code
+that runs efficiently on CPUs) that is able to run on all of the latest high-performance
+computing architectures, from laptops to supercomputers, CPU-only or GPU-accelerated.
+In addition, REMORA is based on AMReX,
+a modern, well-supported adaptive mesh refinement (AMR) library,
+which provides a performance portable interface that shields REMORA
+from most of the detailed changes needed to adapt to new systems.
+The active and large developer community contributing to AMReX helps ensure
+that REMORA will continue to run efficiently as architectures and operating systems
+evolve.
+
 # REMORA Features
 
 Like ROMS, REMORA:
@@ -81,9 +97,9 @@ Like ROMS, REMORA:
  - uses U3 or center-difference, fourth-order (C4) tracer advection
  - uses analytical vertical diffusivity or viscosity, or uses the Generic Length Scale (GLS) turbulence closure model ([@umlauf:03], [@warner:05]).
  - specified land masking, Coriolis force, and realistic wind stress
- - uses quadratic or log-layer bottom drag
+ - uses linear, quadratic, or log-layer bottom drag
  - uses periodic, radiation (e.g., @orlanski:76), or clamped time-varying baroclinic lateral boundary conditions
- - uses radiation, Chapman/Flather (@flather:76, @chapman:85), or clamped barotropic lateral boundary conditions
+ - uses gradient, Chapman/Flather (@flather:76, @chapman:85), or clamped barotropic lateral boundary conditions
  - uses optional boundary nudging based on @marchesiello:01
  - uses parallel I/O with netCDF (using the PnetCDF library), or AMReX plotfiles
 
@@ -93,23 +109,6 @@ Like ROMS, REMORA:
  - Evaporation-precipitation fluxes
  - Nudging to climatology
  - Adaptive mesh refinement
-
-
-# Statement of need
-
-Most widely used ocean modeling codes today do not have the
-ability to use GPU acceleration, which limits their ability to
-efficiently utilize current and next-generation high performance computing
-architectures.  REMORA provides an ocean modeling capability (based on a proven FORTRAN code
-that runs efficiently on CPUs) that is able to run on all of the latest high-performance
-computing architectures, from laptops to supercomputers, CPU-only or GPU-accelerated.
-In addition, REMORA is based on AMReX,
-a modern, well-supported adaptive mesh refinement (AMR) library,
-which provides a performance portable interface that shields REMORA
-from most of the detailed changes needed to adapt to new systems.
-The active and large developer community contributing to AMReX helps ensure
-that REMORA will continue to run efficiently as architectures and operating systems
-evolve.
 
 # Acknowledgements
 
