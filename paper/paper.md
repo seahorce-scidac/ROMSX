@@ -122,10 +122,10 @@ REMORA development is a component of the Study for Exascale Advances in a High-r
 We acknowledge the help of the AMReX team
 in developing and supporting new AMReX features needed by REMORA.
 The work at LBNL was supported by the U.S. Department of Energy
-under contract No. DE-AC02-05CH11231.
+under contract No. DE-AC02-05CH11231. 
 The work at PNNL was supported by the U.S. Department of Energy
-under contract No. DE-AC05-76RL01830
+under contract No. DE-AC05-76RL01830. 
 The work at ANL was supported by the U.S. Department of Energy
-under contract No. DE-AC02-06CH11357
+under contract No. DE-AC02-06CH11357.
 
 # References
