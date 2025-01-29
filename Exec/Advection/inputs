@@ -8,7 +8,7 @@ remora.prob_hi     =  41000. 41000.       0.
 
 remora.n_cell           = 81     81      16
 
-remora..is_periodic = 1 1 0
+remora.is_periodic = 1 1 0
 
 # TIME STEP CONTROL
 remora.fixed_dt       = 300.0 # Timestep size (seconds)
