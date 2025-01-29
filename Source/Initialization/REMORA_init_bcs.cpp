@@ -140,7 +140,7 @@ void REMORA::init_bcs ()
     {
         amrex::Vector<Orientation> orientations = {Orientation(Direction::x,Orientation::low), Orientation(Direction::y,Orientation::high),Orientation(Direction::x,Orientation::high),Orientation(Direction::y,Orientation::low)}; // west, south, east, north [matches ROMS]
         std::vector<std::string> bc_types = {"null","null","null","null"};
-        ParmParse pp("bc."+varname);
+        ParmParse pp("remora.bc."+varname);
         std::string bc_type_in = "null";
         // default zvel to outflow
         if (bcvar_type == BCVars::zvel_bc) {
