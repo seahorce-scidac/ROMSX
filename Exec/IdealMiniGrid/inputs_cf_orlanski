@@ -3,8 +3,8 @@ remora.max_step = 100
 
 # PROBLEM SIZE & GEOMETRY
 # dims come from ROMS ana_grid, and must match vals in prob.cpp right now
-remora.geometry.prob_lo     =   0.       0.  -5000.
-remora.geometry.prob_hi     =   320000.  320000.       0.
+remora.prob_lo     =   0.       0.  -5000.
+remora.prob_hi     =   320000.  320000.       0.
 
 remora.n_cell           =  10 16 20
 
