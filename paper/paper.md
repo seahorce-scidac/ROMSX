@@ -85,30 +85,35 @@ evolve.
 
 Like ROMS, REMORA:
 
- - solves the incompressible time-dependent Navier-Stokes equation with the Boussinesq and hydrostatic approximations (see [@shchepetkin.mcwilliams:05], [@haidvogel.ea:08])
- - uses a curvilinear Arakawa C-grid
- - uses a stretched, terrain-following vertical s-coordinate
- - uses a split-explicit time-stepping scheme, where several fast barotropic (2D) steps take place within each baroclinic (3D) update (see [@shchepetkin.mcwilliams:05])
- - baroclinic steps use a third-order Adams-Bashforth scheme
- - barotropic steps use a leapfrog predictor followed by a three-time Adams-Moulton corrector
- - scalars are advanced with a leapfrog step with a trapezoidal correction
- - uses a nonlinear equation of state based on [@jackett.macdougall:97]
- - uses a third-order (U3) upwind momentum advection scheme
- - uses U3 or center-difference, fourth-order (C4) tracer advection
+ - solves the incompressible time-dependent Navier-Stokes equation with the Boussinesq and hydrostatic approximations (see [@shchepetkin.mcwilliams:05], [@haidvogel.ea:08]).
+ - uses a curvilinear Arakawa C-grid.
+ - uses a stretched, terrain-following vertical s-coordinate.
+ - uses a split-explicit time-stepping scheme, where several fast barotropic (2D) steps take place within each baroclinic (3D) update (see [@shchepetkin.mcwilliams:05]).
+ - advances baroclinic steps with a third-order Adams-Bashforth scheme.
+ - advances barotropic steps with a leapfrog predictor followed by a three-time Adams-Moulton corrector.
+ - advances scalars with a leapfrog step with a trapezoidal correction.
+ - uses a nonlinear equation of state based on [@jackett.macdougall:97].
+ - uses a third-order (U3) upwind momentum advection scheme.
+ - uses U3 or center-difference, fourth-order (C4) tracer advection.
  - uses analytical vertical diffusivity or viscosity, or uses the Generic Length Scale (GLS) turbulence closure model ([@umlauf:03], [@warner:05]).
- - specified land masking, Coriolis force, and realistic wind stress
- - uses linear, quadratic, or log-layer bottom drag
- - uses periodic, radiation (e.g., @orlanski:76), or clamped time-varying baroclinic lateral boundary conditions
- - uses gradient, Chapman/Flather (@flather:76, @chapman:85), or clamped barotropic lateral boundary conditions
- - uses optional boundary nudging based on @marchesiello:01
- - uses parallel I/O with netCDF (using the PnetCDF library), or AMReX plotfiles
+ - provides options for specified land masking, Coriolis force, and realistic wind stress.
+ - uses linear, quadratic, or log-layer bottom drag.
+ - uses periodic, radiation (e.g., @orlanski:76), or clamped time-varying baroclinic lateral boundary conditions.
+ - uses zero-gradient, Chapman/Flather (@flather:76, @chapman:85), or clamped barotropic lateral boundary conditions.
+ - uses optional boundary nudging based on @marchesiello:01.
+ - supports I/O with netCDF (using PnetCDF).
+
+Additionally, REMORA provides support for parallel I/O with AMReX plotfiles.
 
 ### Next development steps
- - Surface heat flux parameterizations
- - Rivers
- - Evaporation-precipitation fluxes
- - Nudging to climatology
- - Adaptive mesh refinement
+
+Subsequent releases of REMORA will include:
+
+ - parallel I/O with PnetCDF.
+ - full adaptive mesh refinement; currently AMR is tested in REMORA for simple problems such as scalar advection over flat bathymetry.
+ - surface heat and evaporation-precipitation flux parameterizations.
+ - point sources and sinks to simulate, e.g. rivers.
+ - nudging to climatology.
 
 # Acknowledgements
 
