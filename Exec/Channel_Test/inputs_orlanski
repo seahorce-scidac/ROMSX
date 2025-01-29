@@ -1,29 +1,24 @@
 # ------------------  INPUTS TO MAIN PROGRAM  -------------------
-max_step = 10
-
-amrex.fpe_trap_invalid = 1
-
-fabarray.mfiter_tile_size = 1024 1024 1024
+remora.max_step = 10
 
 # PROBLEM SIZE & GEOMETRY
-geometry.prob_lo     =      0.      0.     -50.
-geometry.prob_hi     = 100000. 300000.       0.
+remora.prob_lo     =      0.      0.     -50.
+remora.prob_hi     = 100000. 300000.       0.
 
-amr.n_cell           =   20     60      50
-#amr.n_cell           =  10     10      50
+remora.n_cell           =   20     60      50
 
-geometry.is_periodic = 0 0 0
+remora.is_periodic = 0 0 0
 
 remora.boundary_per_variable = 1
-bc.temp.type   =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
-bc.salt.type   =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
-bc.scalar.type =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
-bc.u.type      =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
-bc.v.type      =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
-bc.ubar.type   =  outflow outflow outflow outflow
-bc.vbar.type   =  outflow outflow outflow outflow
-bc.zeta.type   =  outflow outflow outflow outflow
-bc.tke.type    =  outflow outflow outflow outflow
+remora.bc.temp.type   =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
+remora.bc.salt.type   =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
+remora.bc.scalar.type =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
+remora.bc.u.type      =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
+remora.bc.v.type      =  orlanski_rad orlanski_rad orlanski_rad orlanski_rad
+remora.bc.ubar.type   =  outflow outflow outflow outflow
+remora.bc.vbar.type   =  outflow outflow outflow outflow
+remora.bc.zeta.type   =  outflow outflow outflow outflow
+remora.bc.tke.type    =  outflow outflow outflow outflow
 
 # TIME STEP CONTROL
 remora.fixed_dt       = 400.0 # Timestep size (seconds)
@@ -35,10 +30,6 @@ remora.fixed_ndtfast_ratio = 10
 # DIAGNOSTICS & VERBOSITY
 remora.sum_interval  = 1       # timesteps between integrated/max quantities, if remora.v > 0
 remora.v             = 0       # verbosity in REMORA.cpp (0: none, 1: integrated quantities, etc, 2: print boxes)
-amr.v                = 1       # verbosity in Amr.cpp
-
-# REFINEMENT / REGRIDDING
-amr.max_level       = 0       # maximum level number allowed
 
 # CHECKPOINT FILES
 remora.check_file      = chk        # root name of checkpoint file
@@ -54,7 +45,6 @@ remora.write_history_file = true
 # SOLVER CHOICE
 remora.flat_bathymetry = false
 remora.tracer_horizontal_advection_scheme = "upstream3" # upstream3 or centered4
-remora.spatial_order = 2
 remora.vertical_mixing_type = gls
 
 remora.gls_P = 3.0

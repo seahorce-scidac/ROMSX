@@ -1,18 +1,16 @@
 # ------------------  INPUTS TO MAIN PROGRAM  -------------------
-max_step = 10
-stop_time = 300000.0
+remora.max_step = 10
+remora.stop_time = 300000.0
 
 amrex.fpe_trap_invalid = 1
 
-fabarray.mfiter_tile_size = 1024 1024 1024
-
 # PROBLEM SIZE & GEOMETRY
-geometry.prob_lo     =      0.     0.    -150.
-geometry.prob_hi     =  40000. 40000.       0.
+remora.prob_lo     =      0.     0.    -150.
+remora.prob_hi     =  40000. 40000.       0.
 
-amr.n_cell           = 80     80      16
+remora.n_cell           = 80     80      16
 
-geometry.is_periodic = 1 1 0
+remora.is_periodic = 1 1 0
 
 # TIME STEP CONTROL
 remora.fixed_dt       = 100.0 # Timestep size (seconds)
@@ -26,6 +24,8 @@ amr.v                = 1       # verbosity in Amr.cpp
 # REFINEMENT / REGRIDDING
 amr.max_level       = 1       # maximum level number allowed
 amr.ref_ratio_vect = 2 2 1
+amr.n_error_buf = 3 3
+amr.regrid_int=1
 
 # CHECKPOINT FILES
 remora.check_file      = chk        # root name of checkpoint file
@@ -59,8 +59,8 @@ remora.coriolis_beta = 0.0
 remora.rdrag=0.0
 
 # PROBLEM PARAMETERS (velocity fields)
-prob.u_0   =1.0e-0
-prob.v_0   = -1.0e-0
+remora.prob.u_0   =1.0e-0
+remora.prob.v_0   = -1.0e-0
 
 remora.refinement_indicators = scalar
 remora.scalar.max_level = 1
@@ -69,8 +69,3 @@ remora.scalar.value_greater = 0.5
 remora.scalar.start_time = 200
 remora.coupling_type = "TwoWay"
 
-remora.do_substep=0
-
-amr.n_error_buf = 3 3
-
-remora.regrid_int=1

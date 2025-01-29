@@ -1,18 +1,13 @@
 # ------------------  INPUTS TO MAIN PROGRAM  -------------------
-max_step = 10
-
-amrex.fpe_trap_invalid = 1
-
-fabarray.mfiter_tile_size = 1024 1024 1024
+remora.max_step = 10
 
 # PROBLEM SIZE & GEOMETRY
-geometry.prob_lo     =      0.     0.    -150.
-geometry.prob_hi     =  41000. 80000.       0.
+remora.prob_lo     =      0.     0.    -150.
+remora.prob_hi     =  41000. 80000.       0.
 
-amr.n_cell           =  41     80      16
-#amr.n_cell           =  41     80      16
+remora.n_cell           =  41     80      16
 
-geometry.is_periodic = 1 1 0
+remora.is_periodic = 1 1 0
 
 # TIME STEP CONTROL
 remora.fixed_dt       = 5 # Timestep size (seconds)
@@ -24,7 +19,6 @@ remora.fixed_ndtfast_ratio  = 1 # Ratio of baroclinic to barotropic time step
 # DIAGNOSTICS & VERBOSITY
 remora.sum_interval  = 1       # timesteps between computing mass
 remora.v             = 1       # verbosity in REMORA.cpp (0: none, 1: print boxes, etc, 2: print values)
-amr.v                = 1       # verbosity in Amr.cpp
 
 # REFINEMENT / REGRIDDING
 amr.max_level       = 1       # maximum level number allowed
@@ -43,7 +37,6 @@ remora.plotfile_type = amrex
 # SOLVER CHOICE
 remora.flat_bathymetry = false
 remora.horizontal_advection_scheme = "upstream3" # upstream3 or centered4
-remora.spatial_order = 2
 
 # Linear EOS parameters
 remora.R0    = 1027.0  # background density value (Kg/m3) used in Linear Equation of State
@@ -53,9 +46,9 @@ remora.Tcoef = 1.7e-4  # linear equation of state parameter (1/Celsius)
 remora.Scoef = 0.0     # linear equation of state parameter (nondimensional)
 remora.rho0  = 1025.0  # Mean density (Kg/m3) used when Boussinesq approx is inferred
 
-#prob.velRef = 8.0e-3
-#prob.zRef  = 80.0e-3
-prob.u_0  = 80.0e-4
+#remora.prob.velRef = 8.0e-3
+#remora.prob.zRef  = 80.0e-3
+remora.prob.u_0  = 80.0e-4
 
 remora.tcline = 25.0
 remora.rdrag=0.0

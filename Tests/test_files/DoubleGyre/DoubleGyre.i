@@ -1,21 +1,21 @@
 # ------------------  INPUTS TO MAIN PROGRAM  -------------------
-max_step = 10
+remora.max_step = 10
 
 amrex.fpe_trap_invalid = 1
 
 # PROBLEM SIZE & GEOMETRY
-geometry.prob_lo     =      0.      0.     -500.
-geometry.prob_hi     = 1000000. 2000000.       0.
+remora.prob_lo     =      0.      0.     -500.
+remora.prob_hi     = 1000000. 2000000.       0.
 
-amr.n_cell           =  54     108      4
+remora.n_cell           =  54     108      4
 
-geometry.is_periodic = 0 0 0
+remora.is_periodic = 0 0 0
 
-bc.xlo.type = "SlipWall"
-bc.xhi.type = "SlipWall"
+remora.bc.xlo.type = "SlipWall"
+remora.bc.xhi.type = "SlipWall"
 
-bc.ylo.type = "SlipWall"
-bc.yhi.type = "SlipWall"
+remora.bc.ylo.type = "SlipWall"
+remora.bc.yhi.type = "SlipWall"
 
 # TIME STEP CONTROL
 remora.fixed_dt       = 3600.0 # Timestep size (seconds)
@@ -28,9 +28,6 @@ remora.fixed_ndtfast_ratio = 20
 remora.sum_interval  = 1       # timesteps between integrated/max quantities, if remora.v > 0
 remora.v             = 0       # verbosity in REMORA.cpp (0: none, 1: integrated quantities, etc, 2: print boxes)
 amr.v                = 1       # verbosity in Amr.cpp
-
-# REFINEMENT / REGRIDDING
-amr.max_level       = 0       # maximum level number allowed
 
 # CHECKPOINT FILES
 remora.check_file      = chk        # root name of checkpoint file

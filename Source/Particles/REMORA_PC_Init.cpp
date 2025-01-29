@@ -10,7 +10,7 @@ void REMORAPC::readInputs ()
 {
     BL_PROFILE("REMORAPC::readInputs");
 
-    ParmParse pp(m_name);
+    ParmParse pp("remora."+m_name);
 
     m_initialization_type = REMORAParticleInitializations::init_box_uniform;
     pp.query("initial_distribution_type", m_initialization_type);
