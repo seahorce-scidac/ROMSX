@@ -1,16 +1,13 @@
 # ------------------  INPUTS TO MAIN PROGRAM  -------------------
-max_step = 100
-
-fabarray.mfiter_tile_size = 1024 1024 1024
-#fabarray.mfiter_tile_size = 10 10 1024
+remora.max_step = 100
 
 # PROBLEM SIZE & GEOMETRY
-geometry.prob_lo     =      0.      0.     -50.
-geometry.prob_hi     = 100000. 300000.       0.
+remora.prob_lo     =      0.      0.     -50.
+remora.prob_hi     = 100000. 300000.       0.
 
-amr.n_cell           =  20     60      50
+remora.n_cell           =  20     60      50
 
-geometry.is_periodic = 1 0 0
+remora.is_periodic = 1 0 0
 
 remora.bc.ylo.type = "SlipWall"
 remora.bc.yhi.type = "SlipWall"
@@ -25,10 +22,6 @@ remora.fixed_ndtfast_ratio = 10
 # DIAGNOSTICS & VERBOSITY
 remora.sum_interval  = 1       # timesteps between integrated/max quantities, if remora.v > 0
 remora.v             = 0       # verbosity in REMORA.cpp (0: none, 1: integrated quantities, etc, 2: print boxes)
-amr.v                = 1       # verbosity in Amr.cpp
-
-# REFINEMENT / REGRIDDING
-amr.max_level       = 0       # maximum level number allowed
 
 # CHECKPOINT FILES
 remora.check_file      = chk        # root name of checkpoint file
@@ -66,7 +59,6 @@ remora.Zos = 0.002
 remora.Akk_bak = 5.0e-6
 remora.Akp_bak = 5.0e-6
 remora.Akv_bak = 1.0e-5
-
 
 # Linear EOS parameters
 remora.R0    = 1027.0  # background density value (Kg/m3) used in Linear Equation of State

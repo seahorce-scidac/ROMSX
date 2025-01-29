@@ -20,9 +20,9 @@ Problem Geometry
 
 The problem geometry can be specified either by a NetCDF grid file or in the inputs.
 Instructions for setting grid, initial, and Dirichelet boundary conditions from NetCDF file can be found
-:ref:`here<icbc-parameters>`. If one of these quantities is specified from a NetCDF file, they all must be. Even if the grid is specified in the NetCDF file, the geometry and boundary parameters below must still be set. ``geometry.prob_lo`` and ``geometry.prob_hi`` do not need to agree with the file in this case.
+:ref:`here<icbc-parameters>`. If one of these quantities is specified from a NetCDF file, they all must be. Even if the grid is specified in the NetCDF file, the geometry and boundary parameters below must still be set. ``remora.prob_lo`` and ``remora.prob_hi`` do not need to agree with the file in this case.
 
-The z-component of ``geometry.prob_lo`` should be more negative than the deepest bathymetry, and the z-compoonent of ``geometry.prob_hi`` should be 0.
+The z-component of ``remora.prob_lo`` should be more negative than the deepest bathymetry, and the z-compoonent of ``remora.prob_hi`` should be 0.
 
 List of Parameters
 ------------------
@@ -31,17 +31,17 @@ List of Parameters
 | Parameter                | Definition      | Acceptable        | Default     |
 |                          |                 | Values            |             |
 +==========================+=================+===================+=============+
-| **geometry.prob_lo**     | physical        | [Real Real -Real] | must be set |
+| **remora.prob_lo**       | physical        | [Real Real -Real] | must be set |
 |                          | location of low |                   |             |
 |                          | corner of the   |                   |             |
 |                          | domain          |                   |             |
 +--------------------------+-----------------+-------------------+-------------+
-| **geometry.prob_hi**     | physical        | [Real Real 0]     | must be set |
+| **remora.prob_hi**       | physical        | [Real Real 0]     | must be set |
 |                          | location of     |                   |             |
 |                          | high corner of  |                   |             |
 |                          | the domain      |                   |             |
 +--------------------------+-----------------+-------------------+-------------+
-| **geometry.is_periodic** | is the domain   | 0 if false, 1     | 0 0 0       |
+| **remora.is_periodic**   | is the domain   | 0 if false, 1     | 0 0 0       |
 |                          | periodic in     | if true.          |             |
 |                          | this direction  | Z-component must  |             |
 |                          |                 | be zero           |             |
@@ -50,14 +50,14 @@ List of Parameters
 Examples of Usage
 -----------------
 
--  **geometry.prob_lo** = 0 0 -200
+-  **remora.prob_lo** = 0 0 -200
    defines the low corner of the domain at (0 m,0 m,-200 m) in physical space.
 
--  **geometry.prob_hi** = 1.e8 2.e8 0
+-  **remora.prob_hi** = 1.e8 2.e8 0
    defines the high corner of the domain at (1.e8 m, 2.e8 m, 0 m) in
    physical space.
 
--  **geometry.is_periodic** = 0 1 0
+-  **remora.is_periodic** = 0 1 0
    says the domain is periodic in the y-direction only.
 
 Domain Boundary Conditions
@@ -104,64 +104,168 @@ List of Parameters
 |                           |                               |             | is true                  |
 +---------------------------+-------------------------------+-------------+--------------------------+
 
-Resolution
-==========
+Resolution and Tiling
+=====================
+
+The REMORA gridding and load balancing strategy is based on that in AMReX.
+See the `Gridding`_ section of the AMReX documentation for details.
+
+.. _`Gridding`: https://amrex-codes.github.io/amrex/docs_html/ManagingGridHierarchy_Chapter.html
 
 .. _list-of-parameters-2:
 
 List of Parameters
 ------------------
 
-+---------------------------+-----------------+-----------------+-------------+
-| Parameter                 | Definition      | Acceptable      | Default     |
-|                           |                 | Values          |             |
-+===========================+=================+=================+=============+
-| **amr.n_cell**            | number of cells | Integer > 0     | must be set |
-|                           | in each         |                 |             |
-|                           | direction at    |                 |             |
-|                           | the coarsest    |                 |             |
-|                           | level           |                 |             |
-+---------------------------+-----------------+-----------------+-------------+
-| **amr.max_level**         | number of       | Integer >= 0    | must be set |
-|                           | levels of       |                 |             |
-|                           | refinement      |                 |             |
-|                           | above the       |                 |             |
-|                           | coarsest level  |                 |             |
-+---------------------------+-----------------+-----------------+-------------+
-| **amr.ref_ratio**         | ratio of coarse | 2 / 3 / 4       | 2 for all   |
-|                           | to fine grid    | (one per level) | levels      |
-|                           | spacing between |                 |             |
-|                           | subsequent      |                 |             |
-|                           | levels          |                 |             |
-+---------------------------+-----------------+-----------------+-------------+
-| **amr.ref_ratio_vect**    | ratio of coarse | 3 integers      | 2 for all   |
-|                           | to fine grid    | (one per dir)   | directions  |
-|                           | spacing between | 2 / 3 / 4       |             |
-|                           | subsequent      |                 |             |
-|                           | levels          |                 |             |
-+---------------------------+-----------------+-----------------+-------------+
-| **amr.regrid_int**        | how often to    | Integer > 0     | must be set |
-|                           | regrid          |                 |             |
-+---------------------------+-----------------+-----------------+-------------+
-| **amr.regrid_on_restart** | should we       | 0 or 1          | 0           |
-|                           | regrid          |                 |             |
-|                           | immediately     |                 |             |
-|                           | after           |                 |             |
-|                           | restarting      |                 |             |
-+---------------------------+-----------------+-----------------+-------------+
++---------------------------+-----------------+---------------------------+-----------------------+
+| Parameter                 | Definition      | Acceptable                | Default               |
+|                           |                 | Values                    |                       |
++===========================+=================+===========================+=======================+
+| **remora.n_cell**         | number of cells | Triplet of integers > 0   | must be set           |
+|                           | in each         |                           |                       |
+|                           | direction at    | {x,y,z}                   |                       |
+|                           | the coarsest    |                           |                       |
+|                           | level           |                           |                       |
++---------------------------+-----------------+---------------------------+-----------------------+
+| **remora.omp_tile_size**  | target tile     | Triplet of integers > 0   | CPU: 8 8 1024         |
+|                           | size            |                           |                       |
+|                           |                 | {x,y,z}                   | GPU: 1024 1024 1024   |
++---------------------------+-----------------+---------------------------+-----------------------+
 
-Note: if **amr.max_level** = 0 then you do not need to set
-**amr.ref_ratio** or **amr.regrid_int**.
+Notes
+-----
+
+-  **remora.omp_tile_size** is an alias for **fabarray.mfiter_tile_size**, which controls
+   the distribution of work by OpenMP.
+
+-  The domain may not be tiled in the z direction. That is, the last component of **remora.omp_tile_size**
+   must be greater than or equal to the number of vertical levels.
 
 .. _examples-of-usage-2:
 
 Examples of Usage
 -----------------
 
--  **amr.n_cell** = 32 64 64
+-  **remora.n_cell** = 32 64 64
 
    would define the domain to have 32 cells in the x-direction, 64 cells
    in the y-direction, and 64 cells in the z-direction *at the coarsest level*.
+
+Mesh Refinement and (Re)gridding
+================================
+
+Overview
+--------
+
+The user defines how to tag individual cells at a given level for refinement.
+This list of tagged cells is sent to a grid generation routine, which uses the
+Berger–Rigoutsos algorithm to create rectangular grids that contain the
+tagged cells.
+
+See :ref:`MeshRefinement` for more details on how to specify regions for
+refinement.
+
+Note that because these arguments are primarily used by AMReX and pertain to adaptive mesh
+refinement, they use the prefix ``amr``.
+
+.. _list-of-parameters-4:
+
+List of Parameters
+------------------
+
++----------------------------+-----------------+----------------+----------------+
+| Parameter                  | Definition      | Acceptable     | Default        |
+|                            |                 | Values         |                |
++============================+=================+================+================+
+| **amr.max_level**          | number of       | Integer >= 0   | must be set    |
+|                            | levels of       |                |                |
+|                            | refinement      |                |                |
+|                            | above the       |                |                |
+|                            | coarsest level  |                |                |
++----------------------------+-----------------+----------------+----------------+
+| **amr.ref_ratio**          | ratio of coarse | 2 / 3 / 4      | 2 for all      |
+|                            | to fine grid    | (one per level)| levels         |
+|                            | spacing between |                |                |
+|                            | subsequent      |                |                |
+|                            | levels          |                |                |
++----------------------------+-----------------+----------------+----------------+
+| **amr.ref_ratio_vect**     | ratio of coarse | 3 integers     | 2 for all      |
+|                            | to fine grid    | (one per dir)  | directions     |
+|                            | spacing between | 2 / 3 / 4      |                |
+|                            | subsequent      |                |                |
+|                            | levels          |                |                |
++----------------------------+-----------------+----------------+----------------+
+| **amr.regrid_int**         | how often to    | Integer > 0    | must be set    |
+|                            | regrid          |                |                |
++----------------------------+-----------------+----------------+----------------+
+| **amr.regrid_on_restart**  | should we       | 0 or 1         | 0              |
+|                            | regrid          |                |                |
+|                            | immediately     |                |                |
+|                            | after           |                |                |
+|                            | restarting      |                |                |
++----------------------------+-----------------+----------------+----------------+
+| **amr.regrid_file**        | name of file    | text           | no file        |
+|                            | from which to   |                |                |
+|                            | read the grids  |                |                |
++----------------------------+-----------------+----------------+----------------+
+| **amr.grid_eff**           | grid            | Real > 0, < 1  | 0.7            |
+|                            | efficiency at   |                |                |
+|                            | coarse level    |                |                |
+|                            | at which grids  |                |                |
+|                            | are created     |                |                |
++----------------------------+-----------------+----------------+----------------+
+| **amr.n_error_buf**        | radius of       | Integer >= 0   | 1              |
+|                            | additional      |                |                |
+|                            | tagging around  |                |                |
+|                            | already tagged  |                |                |
+|                            | cells           |                |                |
++----------------------------+-----------------+----------------+----------------+
+| **amr.blocking_factor**    | grid size must  | Integer > 0    | 2              |
+|                            | be a multiple   |                |                |
+|                            | of this         |                |                |
++----------------------------+-----------------+----------------+----------------+
+| **amr.refine_grid_layout** | refine grids    | 0 if false, 1  | 1              |
+|                            | more if # of    | if true        |                |
+|                            | processors      |                |                |
+|                            | :math:`>` # of  |                |                |
+|                            | grids           |                |                |
++----------------------------+-----------------+----------------+----------------+
+| **amr.do_substep**         | whether to sub- | 0 if false, 1  | 0              |
+|                            | step finer      | if true        |                |
+|                            | levels in time  |                |                |
+|                            |                 | NOTE: true     |                |
+|                            |                 | will trigger   |                |
+|                            |                 | Assert failure |                |
++----------------------------+-----------------+----------------+----------------+
+
+.. _notes-2:
+
+Notes
+-----
+
+-  if **amr.max_level** = 0 then you do not need to set
+   **amr.ref_ratio** or **amr.regrid_int**.
+
+-  **amr.n_error_buf**, **remora.max_grid_size** and
+   **amr.blocking_factor** can be read in as a single value which is
+   assigned to every level, or as multiple values, one for each level
+
+-  **amr.max_grid_size** at every level must be even
+
+-  **amr.blocking_factor** at every level must be a power of 2
+
+-  the domain size **remora.n_cell** must be a multiple of
+   **amr.blocking_factor** at level 0
+
+-  **amr.max_grid_size** must be a multiple of **amr.blocking_factor**
+   at every level
+
+-  the substepping turned on by **amr.do_substep** is NOT implemented yet so will trigger an Assert.
+
+.. _examples-of-usage-3:
+
+Examples of Usage
+-----------------
 
 -  | **amr.max_level** = 2
    | would allow a maximum of 2 refined levels in addition to the coarse
@@ -186,86 +290,6 @@ Examples of Usage
    | tells the code to regrid every 2 steps. Thus in this example, new
      level-1 grids will be created every 2 level-0 time steps, and new
      level-2 grids will be created every 2 level-1 time steps.
-
-Regridding
-==========
-
-Overview
---------
-
-The user defines how to tag individual cells at a given level for refinement.
-This list of tagged cells is sent to a grid generation routine, which uses the
-Berger–Rigoutsos algorithm to create rectangular grids that contain the
-tagged cells.
-
-See :ref:`MeshRefinement` for more details on how to specify regions for
-refinement.
-
-.. _list-of-parameters-4:
-
-List of Parameters
-------------------
-
-+----------------------------+----------------+----------------+----------------+
-| Parameter                  | Definition     | Acceptable     | Default        |
-|                            |                | Values         |                |
-+============================+================+================+================+
-| **amr.regrid_file**        | name of file   | text           | no file        |
-|                            | from which to  |                |                |
-|                            | read the grids |                |                |
-+----------------------------+----------------+----------------+----------------+
-| **amr.grid_eff**           | grid           | Real > 0, < 1  | 0.7            |
-|                            | efficiency at  |                |                |
-|                            | coarse level   |                |                |
-|                            | at which grids |                |                |
-|                            | are created    |                |                |
-+----------------------------+----------------+----------------+----------------+
-| **amr.n_error_buf**        | radius of      | Integer >= 0   | 1              |
-|                            | additional     |                |                |
-|                            | tagging around |                |                |
-|                            | already tagged |                |                |
-|                            | cells          |                |                |
-+----------------------------+----------------+----------------+----------------+
-| **amr.max_grid_size**      | maximum size   | Integer > 0    | 32             |
-|                            | of a grid in   |                |                |
-|                            | any direction  |                |                |
-+----------------------------+----------------+----------------+----------------+
-| **amr.max_grid_size**      | maximum size   | Integer        | 32             |
-+----------------------------+----------------+----------------+----------------+
-| **amr.blocking_factor**    | grid size must | Integer > 0    | 2              |
-|                            | be a multiple  |                |                |
-|                            | of this        |                |                |
-+----------------------------+----------------+----------------+----------------+
-| **amr.refine_grid_layout** | refine grids   | 0 if false, 1  | 1              |
-|                            | more if # of   | if true        |                |
-|                            | processors     |                |                |
-|                            | :math:`>` # of |                |                |
-|                            | grids          |                |                |
-+----------------------------+----------------+----------------+----------------+
-
-.. _notes-2:
-
-Notes
------
-
--  **amr.n_error_buf**, **amr.max_grid_size** and
-   **amr.blocking_factor** can be read in as a single value which is
-   assigned to every level, or as multiple values, one for each level
-
--  **amr.max_grid_size** at every level must be even
-
--  **amr.blocking_factor** at every level must be a power of 2
-
--  the domain size **amr.n_cell** must be a multiple of
-   **amr.blocking_factor** at level 0
-
--  **amr.max_grid_size** must be a multiple of **amr.blocking_factor**
-   at every level
-
-.. _examples-of-usage-3:
-
-Examples of Usage
------------------
 
 -  | **amr.regrid_file** = *fixed_grids*
    | In this case the list of grids at each fine level are contained in
@@ -298,16 +322,6 @@ Examples of Usage
    | The dimensions of all the final grids will be multiples of 32 at
      level 0, multiples of 16 at level 1, and multiples of 8 at level 2.
 
-.. _subsec:grid-generation:
-
-Gridding and Load Balancing
----------------------------
-
-The REMORA gridding and load balancing strategy is based on that in AMReX.
-See the `Gridding`_ section of the AMReX documentation for details.
-
-.. _`Gridding`: https://amrex-codes.github.io/amrex/docs_html/ManagingGridHierarchy_Chapter.html
-
 Simulation Time
 ===============
 
@@ -320,10 +334,10 @@ List of Parameters
 | Parameter              | Definition                | Acceptable   | Default |
 |                        |                           | Values       |         |
 +========================+===========================+==============+=========+
-| **max_step**           | maximum number of level 0 | Integer >= 0 | -1      |
+| **remora.max_step**    | maximum number of level 0 | Integer >= 0 | -1      |
 |                        | time steps                |              |         |
 +------------------------+---------------------------+--------------+---------+
-| **stop_time**          | final simulation          | Real >= 0    | -1.0    |
+| **remora.stop_time**   | final simulation          | Real >= 0    | -1.0    |
 |                        | time                      |              |         |
 +------------------------+---------------------------+--------------+---------+
 | **remora.start_time**  | initial simulation        | Real >= 0    | 0.0     |
@@ -336,10 +350,10 @@ Notes
 -----
 
 To control the number of time steps, you can limit by the maximum number
-of level-0 time steps (**max_step**), or the final simulation time
-(**stop_time**), or both. The code will stop at whichever criterion
-comes first. Note that if the code reaches **stop_time** then the final
-time step will be shortened so as to end exactly at **stop_time**, not
+of level-0 time steps (**remora.max_step**), or the final simulation time
+(**remora.stop_time**), or both. The code will stop at whichever criterion
+comes first. Note that if the code reaches **remora.stop_time** then the final
+time step will be shortened so as to end exactly at **remora.stop_time**, not
 pass it.
 
 .. _examples-of-usage-4:
@@ -347,9 +361,9 @@ pass it.
 Examples of Usage
 -----------------
 
--  **max_step** = 1000
+-  **remoraw.max_step** = 1000
 
--  **stop_time** = 1.0
+-  **remora.stop_time** = 1.0
 
 will end the calculation when either the simulation time reaches 1.0 or
 the number of level-0 steps taken equals 1000, whichever comes first.
@@ -432,7 +446,7 @@ List of Parameters
 | Parameter                  | Definition       | Acceptable                       | Default        |
 |                            |                  | Values                           |                |
 +============================+==================+==================================+================+
-| **amr.v**                  | verbosity of     | 0 or 1                           | 0              |
+| **amr.v**                  | verbosity of     | 0 or 1                           | remora.v       |
 |                            | Amr.cpp          |                                  |                |
 +----------------------------+------------------+----------------------------------+----------------+
 | **remora.v**               | verbosity of     | - 0: none                        | 0              |
@@ -476,7 +490,7 @@ List of Parameters
 +==================================+=============================+===================+=============+
 | **remora.use_coriolis**          | Include Coriolis terms.     | true / false      | false       |
 +----------------------------------+-----------------------------+-------------------+-------------+
-| **remora.flat_bathymetry**       | Use flat bathymetry.        | true / false      | true        |
+| **remora.flat_bathymetry**       | Use flat bathymetry.        | true / false      | false       |
 +----------------------------------+-----------------------------+-------------------+-------------+
 | **remora.use_prestep**           | Do prestep terms. Only for  |  true / false     | true        |
 |                                  | debugging purposes.         |                   |             |

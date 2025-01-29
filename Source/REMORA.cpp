@@ -708,15 +708,23 @@ void
 REMORA::ReadParameters ()
 {
     {
-        ParmParse pp;  // Traditionally, max_step and stop_time do not have prefix.
-        pp.query("max_step", max_step);
-        pp.query("stop_time", stop_time);
+        ParmParse pp;  // Traditionally, max_step and stop_time do not have prefix, so allow it for now.
+        bool noprefix_max_step = pp.query("max_step", max_step);
+        bool noprefix_stop_time = pp.query("stop_time", stop_time);
+        bool remora_max_step = pp.query("remora.max_step", max_step);
+        bool remora_stop_time = pp.query("remora.stop_time", stop_time);
+        if (remora_max_step and noprefix_max_step) {
+            Abort("remora.max_step and max_step are both specified. Please use only one!");
+        }
+        if (remora_stop_time and noprefix_stop_time) {
+            Abort("remora.stop_time and stop_time are both specified. Please use only one!");
+        }
     }
 
     ParmParse pp(pp_prefix);
     ParmParse pp_amr("amr");
     {
-        pp.query("regrid_int", regrid_int);
+        pp_amr.query("regrid_int", regrid_int);
         pp.query("check_file", check_file);
         pp.query("check_int", check_int);
         pp_amr.query("check_int", check_int);
@@ -771,9 +779,12 @@ REMORA::ReadParameters ()
             fixed_ndtfast_ratio = static_cast<int>(fixed_dt / fixed_fast_dt);
         }
 
-        pp.query("do_substep", do_substep);
-
         AMREX_ASSERT(cfl > 0. || fixed_dt > 0.);
+
+        pp_amr.query("do_substep", do_substep);
+        if (do_substep) {
+            amrex::Abort("Time substepping is not yet implemented. amr.do_substep must be 0");
+        }
 
         // We use this to keep track of how many boxes we read in from WRF initialization
         num_files_at_level.resize(max_level+1,0);

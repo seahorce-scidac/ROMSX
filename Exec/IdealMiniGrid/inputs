@@ -1,16 +1,14 @@
 # ------------------  INPUTS TO MAIN PROGRAM  -------------------
-max_step = 100
-
-fabarray.mfiter_tile_size = 1024 1024 1024
+remora.max_step = 100
 
 # PROBLEM SIZE & GEOMETRY
 # dims come from ROMS ana_grid, and must match vals in prob.cpp right now
-geometry.prob_lo     =   0.       0.  -5000.
-geometry.prob_hi     =   320000.  320000.       0.
+remora.prob_lo     =   0.       0.  -5000.
+remora.prob_hi     =   320000.  320000.       0.
 
-amr.n_cell           =  10 16 20
+remora.n_cell           =  10 16 20
 
-geometry.is_periodic = 0 0 0
+remora.is_periodic = 0 0 0
 
 remora.bc.xlo.type = "clamped"
 remora.bc.xhi.type = "clamped"
@@ -26,11 +24,6 @@ remora.flat_bathymetry=0
 # DIAGNOSTICS & VERBOSITY
 remora.sum_interval  = 1       # timesteps between integrated/max quantities, if remora.v > 0
 remora.v             = 0       # verbosity in REMORA.cpp (0: none, 1: integrated quantities, etc, 2: print boxes)
-amr.v                = 1       # verbosity in Amr.cpp
-
-# REFINEMENT / REGRIDDING
-amr.max_level        = 0       # maximum level number allowed
-#amr.max_grid_size    = 600     # maximum level number allowed
 
 # CHECKPOINT FILES
 remora.check_file      = chk        # root name of checkpoint file

@@ -380,7 +380,7 @@ struct SolverChoice {
     // Default prefix
     std::string pp_prefix {"remora"};
 
-    bool        flat_bathymetry        = true;
+    bool        flat_bathymetry        = false;
 
     bool        use_salt               = true;
 

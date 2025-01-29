@@ -16,7 +16,7 @@ amrex_probinit(
   const amrex_real* /*probhi*/)
 {
   // Parse params
-  ParmParse pp("prob");
+  ParmParse pp("remora.prob");
 }
 
 /**

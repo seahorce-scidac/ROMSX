@@ -1,28 +1,26 @@
 # ------------------  INPUTS TO MAIN PROGRAM  -------------------
-max_step = 100
-
-fabarray.mfiter_tile_size = 1024 1024 1024
+remora.max_step = 100
 
 # PROBLEM SIZE & GEOMETRY
 # dims come from ROMS ana_grid, and must match vals in prob.cpp right now
-geometry.prob_lo     =   0.       0.  -5000.
-geometry.prob_hi     =   320000.  320000.       0.
+remora.geometry.prob_lo     =   0.       0.  -5000.
+remora.geometry.prob_hi     =   320000.  320000.       0.
 
-amr.n_cell           =  10 16 20
+remora.n_cell           =  10 16 20
 
-geometry.is_periodic = 0 0 0
+remora.is_periodic = 0 0 0
 
 remora.boundary_per_variable = 1
 ##                      WEST              SOUTH             EAST              NORTH
-remorabc.temp.type   =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
-remorabc.salt.type   =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
-remorabc.scalar.type =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
-remorabc.u.type      =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
-remorabc.v.type      =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
-remorabc.ubar.type   =  flather           flather           flather          flather
-remorabc.vbar.type   =  flather           flather           flather          flather
-remorabc.zeta.type   =  chapman           chapman           chapman          chapman
-remorabc.tke.type    =  outflow           outflow           outflow          outflow
+remora.bc.temp.type   =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
+remora.bc.salt.type   =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
+remora.bc.scalar.type =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
+remora.bc.u.type      =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
+remora.bc.v.type      =  orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg orlanski_rad_nudg
+remora.bc.ubar.type   =  flather           flather           flather          flather
+remora.bc.vbar.type   =  flather           flather           flather          flather
+remora.bc.zeta.type   =  chapman           chapman           chapman          chapman
+remora.bc.tke.type    =  outflow           outflow           outflow          outflow
 
 # TIME STEP CONTROL
 remora.fixed_dt            = 200.0 # Timestep size (seconds)
@@ -33,11 +31,6 @@ remora.flat_bathymetry=0
 # DIAGNOSTICS & VERBOSITY
 remora.sum_interval  = 1       # timesteps between integrated/max quantities, if remora.v > 0
 remora.v             = 0       # verbosity in REMORA.cpp (0: none, 1: integrated quantities, etc, 2: print boxes)
-amr.v                = 1       # verbosity in Amr.cpp
-
-# REFINEMENT / REGRIDDING
-amr.max_level        = 0       # maximum level number allowed
-#amr.max_grid_size    = 600     # maximum level number allowed
 
 # CHECKPOINT FILES
 remora.check_file      = chk        # root name of checkpoint file

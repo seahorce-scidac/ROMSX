@@ -968,7 +968,7 @@ private:
     int nfast;
 
     // Whether to substep fine levels in time
-    int do_substep;
+    int do_substep = 0;
 
     // how often each level regrids the higher levels of refinement
     // (after a level advances that many time steps)

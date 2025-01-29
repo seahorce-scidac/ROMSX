@@ -1,17 +1,15 @@
 # ------------------  INPUTS TO MAIN PROGRAM  -------------------
-max_step = 10
+remora.max_step = 10
 
 amrex.fpe_trap_invalid = 1
 
-fabarray.mfiter_tile_size = 1024 1024 1024
-
 # PROBLEM SIZE & GEOMETRY
-geometry.prob_lo     =      0.     0.    -150.
-geometry.prob_hi     =  41000. 80000.       0.
+remora.prob_lo     =      0.     0.    -150.
+remora.prob_hi     =  41000. 80000.       0.
 
-amr.n_cell           =  41     80      16
+remora.n_cell           =  41     80      16
 
-geometry.is_periodic = 1 0 0
+remora.is_periodic = 1 0 0
 
 remora.bc.ylo.type = "SlipWall"
 remora.bc.yhi.type = "SlipWall"
@@ -27,9 +25,6 @@ remora.fixed_ndtfast_ratio  = 30 # Ratio of baroclinic to barotropic time step
 remora.sum_interval  = 1       # timesteps between computing mass
 remora.v             = 0       # verbosity in REMORA.cpp (0: none, 1: print boxes, etc, 2: print values)
 amr.v                = 1       # verbosity in Amr.cpp
-
-# REFINEMENT / REGRIDDING
-amr.max_level       = 0       # maximum level number allowed
 
 # CHECKPOINT FILES
 remora.check_file      = chk        # root name of checkpoint file
