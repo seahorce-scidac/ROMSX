@@ -54,7 +54,7 @@ bibliography: paper.bib
 The Regional Model of the Ocean Refined Adaptively (REMORA) is a new implementation 
 of an existing community standard ocean model, 
 the Regional Ocean Modeling System 
-[ROMS, @shchepetkin.mcwilliams:05; @haidvogel.ea:08] that simulates estuarine and oceanic 
+[ROMS, @haidvogel.ea:08; @shchepetkin.mcwilliams:05] that simulates estuarine and oceanic 
 dynamics using the latest high-performance computing architectures.
 REMORA employs hierarchical parallelism using an MPI+X model, where X may be OpenMP on
 multicore CPU-only systems, or CUDA, HIP, or SYCL on GPU-accelerated systems.
@@ -85,10 +85,10 @@ evolve.
 
 Like ROMS, REMORA:
 
- - solves the incompressible time-dependent Navier-Stokes equation with the Boussinesq and hydrostatic approximations [see @shchepetkin.mcwilliams:05; @haidvogel.ea:08].
+ - solves the incompressible time-dependent Navier-Stokes equation with the Boussinesq and hydrostatic approximations [@haidvogel.ea:08; @shchepetkin.mcwilliams:05].
  - uses a curvilinear Arakawa C-grid.
  - uses a stretched, terrain-following vertical s-coordinate.
- - uses a split-explicit time-stepping scheme, where several fast barotropic (2D) steps take place within each baroclinic (3D) update [see @shchepetkin.mcwilliams:05].
+ - uses a split-explicit time-stepping scheme, where several fast barotropic (2D) steps take place within each baroclinic (3D) update [@shchepetkin.mcwilliams:05].
  - advances baroclinic steps with a third-order Adams-Bashforth scheme.
  - advances barotropic steps with a leapfrog predictor followed by a three-time Adams-Moulton corrector.
  - advances scalars with a leapfrog step with a trapezoidal correction.
