@@ -71,5 +71,5 @@ Examples of Usage
 
 To restart from *chk_run00061*,for example, then set
 
--  **amr.restart** = *chk_run00061*
+-  **remora.restart** = *chk_run00061*
 
