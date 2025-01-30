@@ -38,7 +38,7 @@ options for boundary conditions per side are listed below.
 
 Each of these types of physical boundary condition has a mapping to a mathematical boundary condition
 for each type; this is summarized in the table below, along with the corresponding ROMS boundary conditions.
-If periodic is selected, it must be used for both low and high faces in a direction. The ``geometry.is_periodic``
+If periodic is selected, it must be used for both low and high faces in a direction. The ``remora.is_periodic``
 flag must match as described in :ref:`ProblemGeometry`<geometry-parameters>`.
 
 For example, setting
@@ -50,13 +50,13 @@ For example, setting
     remora.bc.ylo.type = "periodic" #optional
     remora.bc.yhi.type = "periodic" #optional
 
-    geometry.is_periodic = 0 1 0
+    remora.is_periodic = 0 1 0
 
 would define a problem with inflow in the low-\ :math:`x` direction,
 outflow in the high-\ :math:`x` direction, periodic in the :math:`y`-direction,
 and slip wall on the low and high :math:`y`-faces, and
 Note that no keyword is needed for a periodic boundary, here only the
-specification in ``geometry.is_periodic`` is needed.
+specification in ``remora.is_periodic`` is needed.
 
 Boundary per variable
 ---------------------
@@ -106,7 +106,7 @@ For example, setting
     remora.bc.zeta.type   =  periodic  chapman  periodic  chapman
     remora.bc.tke.type    =  periodic  outflow  periodic  outflow
 
-    geometry.is_periodic = 1 0 0
+    remora.is_periodic = 1 0 0
 
 will define a problem that is periodic on the Western and Eastern sides. Temperature, salinity, passive scalar,
 3D u-velocity, and 3D v-velocity will be clamped to values given in a NetCDF file specified by
@@ -178,7 +178,7 @@ We note that ``noslipwall`` allows for non-zero tangential velocities to be spec
 
 ::
 
-    geometry.is_periodic = 1 0 0
+    remora.is_periodic = 1 0 0
 
     remora.bc.ylo.type = "NoSlipWall"
     remora.bc.yhi.type = "NoSlipWall"
