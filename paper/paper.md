@@ -93,7 +93,7 @@ Like ROMS, REMORA:
  - advances barotropic steps with a leapfrog predictor followed by a three-time Adams-Moulton corrector.
  - advances scalars with a leapfrog step with a trapezoidal correction.
  - uses a nonlinear equation of state based on @jackett.macdougall:97.
- - uses a third-order (U3) upwind momentum advection scheme.
+ - uses a third-order upwind (U3) momentum advection scheme.
  - uses U3 or center-difference, fourth-order (C4) tracer advection.
  - uses analytical vertical diffusivity or viscosity, or uses the Generic Length Scale (GLS) turbulence closure model [@umlauf:03; @warner:05].
  - provides options for specified land masking, Coriolis force, and realistic wind stress.
