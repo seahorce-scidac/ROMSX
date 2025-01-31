@@ -192,3 +192,13 @@ that occur at periodic boundaries.
 In the ``FillPatch`` operation, ``FillBoundary`` always overrides any interpolated values, i.e. if
 there is fine data available (except at coarse-fine boundary) we always use it.
 
+Example
+-------
+
+.. figure:: ./figures/scalar_whitebg_circle_hr_00010.png
+    :width: 400
+
+    Mesh refinement example for scalar advection. The black lines show the higher-resolution grids.
+
+The ``Advection`` problem simulates the advection of a Gaussian-distributed passive scalar. The example above was generated with the inputs file found in ``Exec/Advection/inputs_ml``. The regions with scalar density greater than 0.5 are tagged for refinement after 200 seconds of evolution. In order to have the smaller level 1 refined grids shown above, it was run with the runtime parameter ``amr.max_grid_size=16 16 16``.
+
