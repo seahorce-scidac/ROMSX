@@ -615,11 +615,9 @@ void
 REMORA::mask_arrays_for_write(int lev, Real fill_value) {
     for (MFIter mfi(*cons_new[lev],false); mfi.isValid(); ++mfi) {
         Box bx = mfi.tilebox();
-        Box gbx1 = mfi.growntilebox(IntVect(NGROW-1,NGROW-1,0));
-        Box ubx = mfi.nodaltilebox(0);
-        ubx.grow(IntVect(0,1,0));
-        Box vbx = mfi.nodaltilebox(1);
-        vbx.grow(IntVect(1,0,0));
+        Box gbx1 = mfi.growntilebox(IntVect(NGROW+1,NGROW+1,0));
+        Box ubx = mfi.grownnodaltilebox(0,IntVect(NGROW,NGROW,0));
+        Box vbx = mfi.grownnodaltilebox(1,IntVect(NGROW,NGROW,0));
 
         Array4<Real> const& Zt_avg1 = vec_Zt_avg1[lev]->array(mfi);
         Array4<Real> const& ubar = vec_ubar[lev]->array(mfi);
@@ -646,13 +644,13 @@ REMORA::mask_arrays_for_write(int lev, Real fill_value) {
                 salt(i,j,k) = fill_value;
             }
         });
-        ParallelFor(makeSlab(ubx,2,0), 3, [=] AMREX_GPU_DEVICE (int i, int j, int k, int n)
+        ParallelFor(makeSlab(ubx,2,0), 3, [=] AMREX_GPU_DEVICE (int i, int j, int , int n)
         {
             if (!msku(i,j,0)) {
                 ubar(i,j,0,n) = fill_value;
             }
         });
-        ParallelFor(makeSlab(vbx,2,0), 3, [=] AMREX_GPU_DEVICE (int i, int j, int k, int n)
+        ParallelFor(makeSlab(vbx,2,0), 3, [=] AMREX_GPU_DEVICE (int i, int j, int , int n)
         {
             if (!mskv(i,j,0)) {
                 vbar(i,j,0,n) = fill_value;
